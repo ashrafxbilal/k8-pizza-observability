@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <!-- Kubernetes wheel background -->
+  <circle cx="250" cy="250" r="220" fill="#326CE5" />
+  <circle cx="250" cy="250" r="200" fill="#FFFFFF" />
+  
+  <!-- Kubernetes logo spokes -->
+  <g stroke="#326CE5" stroke-width="20" fill="none">
+    <path d="M250,50 L250,450" />
+    <path d="M50,250 L450,250" />
+    <path d="M120,120 L380,380" />
+    <path d="M120,380 L380,120" />
+  </g>
+  
+  <!-- Pizza slice -->
+  <path d="M250,250 L400,100 A220,220 0 0,1 400,400 Z" fill="#FF4757" stroke="#A04000" stroke-width="5" />
+  
+  <!-- Pizza toppings -->
+  <circle cx="320" cy="180" r="15" fill="#FFCC29" />
+  <circle cx="350" cy="250" r="15" fill="#2ED573" />
+  <circle cx="320" cy="320" r="15" fill="#A04000" />
+  
+  <!-- Pizza crust -->
+  <path d="M400,100 A220,220 0 0,1 400,400" fill="none" stroke="#FFCC29" stroke-width="15" />
+  
+  <!-- Central Kubernetes logo -->
+  <circle cx="250" cy="250" r="40" fill="#326CE5" />
+  <path d="M230,230 L270,270 M230,270 L270,230" stroke="white" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Text -->
+  <text x="250" y="480" font-family="'Inter', sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#326CE5">Kubernetes Pizza Observability</text>
+</svg>

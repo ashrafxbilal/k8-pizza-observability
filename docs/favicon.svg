@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Kubernetes wheel background -->
+  <circle cx="50" cy="50" r="45" fill="#326CE5" />
+  <circle cx="50" cy="50" r="40" fill="#FFFFFF" />
+  
+  <!-- Kubernetes logo spokes -->
+  <g stroke="#326CE5" stroke-width="4" fill="none">
+    <path d="M50,10 L50,90" />
+    <path d="M10,50 L90,50" />
+    <path d="M24,24 L76,76" />
+    <path d="M24,76 L76,24" />
+  </g>
+  
+  <!-- Pizza slice -->
+  <path d="M50,50 L80,20 A45,45 0 0,1 80,80 Z" fill="#FF4757" stroke="#A04000" stroke-width="1" />
+  
+  <!-- Pizza toppings -->
+  <circle cx="64" cy="36" r="3" fill="#FFCC29" />
+  <circle cx="70" cy="50" r="3" fill="#2ED573" />
+  <circle cx="64" cy="64" r="3" fill="#A04000" />
+  
+  <!-- Pizza crust -->
+  <path d="M80,20 A45,45 0 0,1 80,80" fill="none" stroke="#FFCC29" stroke-width="3" />
+  
+  <!-- Central Kubernetes logo -->
+  <circle cx="50" cy="50" r="8" fill="#326CE5" />
+  <path d="M46,46 L54,54 M46,54 L54,46" stroke="white" stroke-width="2" stroke-linecap="round" />
+</svg>

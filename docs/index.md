@@ -2,6 +2,12 @@
 
 > Order pizza automatically when your Kubernetes cluster is under high load!
 
+<div class="logo-container">
+  <img src="./assets/images/k8s-pizza-logo.svg" alt="Kubernetes Pizza Observability Logo" class="logo">
+</div>
+
+<script src="./assets/js/main.js"></script>
+
 ## Overview
 
 Kubernetes Pizza Observability is a fun yet practical project that combines infrastructure monitoring with automated pizza ordering. When your Kubernetes cluster experiences high CPU load, the system automatically orders pizza for your team to enjoy while they work on resolving the issues.
@@ -16,16 +22,57 @@ We've taken this concept and integrated it with Kubernetes monitoring to create 
 
 ## Architecture
 
-```
-Kubernetes Cluster
-├── Workloads (Pods, Deployments, etc.)
-├── Prometheus (Monitoring)
-├── Grafana (Visualization & Alerting)
-├── AlertManager (Alert Routing)
-├── Azure Function (Alert Handler)
-├── PizzaOrder CRD (Custom Resource Definition)
-└── Slack App (Order Confirmation)
-```
+<div class="card animate-on-scroll">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="100%" height="300">
+    <!-- Kubernetes Cluster Box -->
+    <rect x="50" y="50" width="700" height="300" rx="10" fill="#F1F2F6" stroke="#326CE5" stroke-width="2"/>
+    <text x="400" y="80" font-family="'Inter', sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#326CE5">Kubernetes Cluster</text>
+    
+    <!-- Workloads -->
+    <rect x="100" y="100" width="150" height="60" rx="5" fill="white" stroke="#6C5CE7" stroke-width="2"/>
+    <text x="175" y="135" font-family="'Inter', sans-serif" font-size="14" text-anchor="middle" fill="#2D3436">Workloads</text>
+    <text x="175" y="155" font-family="'Inter', sans-serif" font-size="12" text-anchor="middle" fill="#6C5CE7">(Pods, Deployments)</text>
+    
+    <!-- Prometheus -->
+    <rect x="100" y="180" width="150" height="60" rx="5" fill="white" stroke="#FF4757" stroke-width="2"/>
+    <text x="175" y="215" font-family="'Inter', sans-serif" font-size="14" text-anchor="middle" fill="#2D3436">Prometheus</text>
+    <text x="175" y="235" font-family="'Inter', sans-serif" font-size="12" text-anchor="middle" fill="#FF4757">(Monitoring)</text>
+    
+    <!-- Grafana -->
+    <rect x="100" y="260" width="150" height="60" rx="5" fill="white" stroke="#2ED573" stroke-width="2"/>
+    <text x="175" y="295" font-family="'Inter', sans-serif" font-size="14" text-anchor="middle" fill="#2D3436">Grafana</text>
+    <text x="175" y="315" font-family="'Inter', sans-serif" font-size="12" text-anchor="middle" fill="#2ED573">(Visualization)</text>
+    
+    <!-- AlertManager -->
+    <rect x="300" y="100" width="150" height="60" rx="5" fill="white" stroke="#FFCC29" stroke-width="2"/>
+    <text x="375" y="135" font-family="'Inter', sans-serif" font-size="14" text-anchor="middle" fill="#2D3436">AlertManager</text>
+    <text x="375" y="155" font-family="'Inter', sans-serif" font-size="12" text-anchor="middle" fill="#FFCC29">(Alert Routing)</text>
+    
+    <!-- Azure Function -->
+    <rect x="300" y="180" width="150" height="60" rx="5" fill="white" stroke="#1E90FF" stroke-width="2"/>
+    <text x="375" y="215" font-family="'Inter', sans-serif" font-size="14" text-anchor="middle" fill="#2D3436">Azure Function</text>
+    <text x="375" y="235" font-family="'Inter', sans-serif" font-size="12" text-anchor="middle" fill="#1E90FF">(Alert Handler)</text>
+    
+    <!-- PizzaOrder CRD -->
+    <rect x="300" y="260" width="150" height="60" rx="5" fill="white" stroke="#FF2E63" stroke-width="2"/>
+    <text x="375" y="295" font-family="'Inter', sans-serif" font-size="14" text-anchor="middle" fill="#2D3436">PizzaOrder CRD</text>
+    <text x="375" y="315" font-family="'Inter', sans-serif" font-size="12" text-anchor="middle" fill="#FF2E63">(Custom Resource)</text>
+    
+    <!-- Slack App -->
+    <rect x="500" y="180" width="150" height="60" rx="5" fill="white" stroke="#00D2D3" stroke-width="2"/>
+    <text x="575" y="215" font-family="'Inter', sans-serif" font-size="14" text-anchor="middle" fill="#2D3436">Slack App</text>
+    <text x="575" y="235" font-family="'Inter', sans-serif" font-size="12" text-anchor="middle" fill="#00D2D3">(Order Confirmation)</text>
+    
+    <!-- Connection Lines -->
+    <path d="M175,160 L175,180" stroke="#6C5CE7" stroke-width="2" stroke-dasharray="5,5"/>
+    <path d="M175,240 L175,260" stroke="#FF4757" stroke-width="2" stroke-dasharray="5,5"/>
+    <path d="M250,130 L300,130" stroke="#6C5CE7" stroke-width="2" stroke-dasharray="5,5"/>
+    <path d="M250,210 L300,210" stroke="#FF4757" stroke-width="2" stroke-dasharray="5,5"/>
+    <path d="M375,160 L375,180" stroke="#FFCC29" stroke-width="2" stroke-dasharray="5,5"/>
+    <path d="M375,240 L375,260" stroke="#1E90FF" stroke-width="2" stroke-dasharray="5,5"/>
+    <path d="M450,210 L500,210" stroke="#1E90FF" stroke-width="2" stroke-dasharray="5,5"/>
+  </svg>
+</div>
 
 ![Kubectl in action](kubectl.jpeg)
 *Managing Kubernetes resources with kubectl*
