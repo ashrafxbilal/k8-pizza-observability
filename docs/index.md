@@ -2,10 +2,6 @@
 
 > Order pizza automatically when your Kubernetes cluster is under high load!
 
-<div class="logo-container">
-  <img src="./assets/images/k8s-pizza-logo.svg" alt="Kubernetes Pizza Observability Logo" class="logo">
-</div>
-
 <script src="./assets/js/main.js"></script>
 
 ## Overview

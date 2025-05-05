@@ -60,6 +60,9 @@ function initDarkModeToggle() {
   // Create dark mode toggle button
   const darkModeToggle = document.createElement('div');
   darkModeToggle.className = 'dark-mode-toggle';
+  darkModeToggle.setAttribute('role', 'button');
+  darkModeToggle.setAttribute('aria-label', 'Toggle dark mode');
+  darkModeToggle.setAttribute('tabindex', '0');
   darkModeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
   document.body.appendChild(darkModeToggle);
   
@@ -70,7 +73,17 @@ function initDarkModeToggle() {
   }
   
   // Toggle dark mode on click
-  darkModeToggle.addEventListener('click', () => {
+  darkModeToggle.addEventListener('click', toggleDarkMode);
+  
+  // Also toggle on keyboard enter/space
+  darkModeToggle.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleDarkMode();
+    }
+  });
+  
+  function toggleDarkMode() {
     document.body.classList.toggle('dark-theme');
     
     // Save user preference
@@ -79,7 +92,7 @@ function initDarkModeToggle() {
     } else {
       localStorage.setItem('theme', 'light');
     }
-  });
+  }
 }
 
 /**
