@@ -1,0 +1,157 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/* Custom styles for Kubernetes Pizza Observability */
+
+:root {
+  --pizza-red: #D73A31;
+  --pizza-yellow: #F9C22E;
+  --pizza-brown: #8C4A2F;
+  --pizza-green: #4CAF50;
+  --k8s-blue: #326CE5;
+}
+
+/* Global styles */
+body {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Header styles */
+.page-header {
+  background-color: var(--k8s-blue);
+  background-image: linear-gradient(120deg, var(--k8s-blue), var(--pizza-red));
+}
+
+/* Button styles */
+.btn {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.3rem;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Typography improvements */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--pizza-brown);
+}
+
+h1 {
+  color: var(--pizza-red);
+}
+
+h2 {
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 0.3em;
+}
+
+/* Code blocks */
+pre {
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  font-size: 85%;
+  line-height: 1.45;
+  overflow: auto;
+  padding: 16px;
+}
+
+code {
+  background-color: rgba(27, 31, 35, 0.05);
+  border-radius: 3px;
+  font-size: 85%;
+  margin: 0;
+  padding: 0.2em 0.4em;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 0.25em solid var(--pizza-yellow);
+  color: #6a737d;
+  padding: 0 1em;
+}
+
+/* Links */
+a {
+  color: var(--k8s-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 4px;
+  margin: 1em 0;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th, td {
+  padding: 8px 12px;
+  border: 1px solid #e1e4e8;
+}
+
+th {
+  background-color: #f6f8fa;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+/* Custom components */
+.note {
+  background-color: #f8f9fa;
+  border-left: 4px solid var(--k8s-blue);
+  padding: 0.8em 1em;
+  margin: 1em 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.warning {
+  background-color: #fff8e6;
+  border-left: 4px solid var(--pizza-yellow);
+  padding: 0.8em 1em;
+  margin: 1em 0;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Footer */
+.site-footer {
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: solid 1px #eff0f1;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 42em) {
+  .page-header {
+    padding: 2rem 1rem;
+  }
+  .project-name {
+    font-size: 1.75rem;
+  }
+}

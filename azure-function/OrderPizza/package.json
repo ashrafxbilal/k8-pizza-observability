@@ -1,0 +1,22 @@
+{
+  "name": "k8s-pizza-order-function",
+  "version": "1.0.0",
+  "description": "Azure Function to order pizza when Kubernetes CPU usage is high",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kubernetes",
+    "monitoring",
+    "pizza",
+    "azure-functions"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@kubernetes/client-node": "^1.1.2",
+    "axios": "^0.21.4",
+    "dominos": "^2.1.2"
+  }
+}

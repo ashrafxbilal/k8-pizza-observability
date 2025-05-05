@@ -1,0 +1,53 @@
+# Global settings
+global:
+  namespace: default
+  labels:
+    app.kubernetes.io/part-of: k8s-pizza-observability
+
+# Pizza Controller settings
+pizzaController:
+  image:
+    repository: ashrafxbilal/pizza-controller
+    tag: latest
+    pullPolicy: Always
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+  serviceAccount:
+    name: pizza-controller-sa
+
+# Azure Function settings
+azureFunction:
+  replicas: 1
+  image:
+    repository: ashrafxbilal/pizza-order-function
+    tag: latest
+    pullPolicy: Always
+  env:
+    CUSTOMER_FIRST_NAME: "Bilal"
+    CUSTOMER_LAST_NAME: "Ashraf"
+    CUSTOMER_EMAIL: "pizzalover@example.com"
+    CUSTOMER_PHONE: "555-555-5555"
+    DELIVERY_ADDRESS_STREET: "123 Main St"
+    DELIVERY_ADDRESS_CITY: "Anytown"
+    DELIVERY_ADDRESS_STATE: "CA"
+    DELIVERY_ADDRESS_ZIP: "90210"
+
+# Dominos payment settings
+dominosPayment:
+  cardType: "Credit"
+  cardNumber: "4100123456789010"
+  cardExpiration: "01/25"
+  cardSecurityCode: "123"
+  cardPostalCode: "90210"
+
+# Prometheus settings
+prometheus:
+  enabled: true
+  alertRules:
+    cpuThreshold: 80
+    duration: 5m

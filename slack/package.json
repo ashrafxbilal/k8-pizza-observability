@@ -1,0 +1,23 @@
+{
+  "name": "k8s-pizza-slack-app",
+  "version": "1.0.0",
+  "description": "Slack app for confirming pizza orders triggered by Kubernetes CPU alerts",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kubernetes",
+    "monitoring",
+    "pizza",
+    "slack"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/bolt": "^3.8.1",
+    "axios": "^0.21.4",
+    "dotenv": "^10.0.0"
+  }
+}

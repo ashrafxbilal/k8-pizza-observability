@@ -1,0 +1,45 @@
+# Terraform files
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform/
+
+# Environment files
+.env
+*.settings.json
+local.settings.json
+container.settings.json
+
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Kubernetes secrets
+*-secret.yaml
+
+# Azure Function local settings
+azure-function/local.settings.json

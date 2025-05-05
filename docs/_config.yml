@@ -1,0 +1,30 @@
+# Jekyll site configuration
+
+# Theme settings
+theme: jekyll-theme-cayman
+
+# Site settings
+title: Kubernetes Pizza Observability
+description: Order pizza automatically when your Kubernetes cluster is under high load!
+
+# Social links
+github_username: yourusername
+
+# Google Analytics
+google_analytics: UA-XXXXXXXXX-X
+
+# Build settings
+markdown: kramdown
+highlight: rouge
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

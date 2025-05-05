@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pizza-test-alert
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: pizza.rules
+      rules:
+        - alert: PizzaTestAlert
+          expr: vector(1)
+          for: 10s
+          labels:
+            severity: critical
+          annotations:
+            summary: "Test alert to trigger pizza webhook"

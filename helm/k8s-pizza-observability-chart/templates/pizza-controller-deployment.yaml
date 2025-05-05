@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza-controller
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: pizza-controller
+    {{- include "k8s-pizza-observability.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.pizzaController.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: pizza-controller
+  template:
+    metadata:
+      labels:
+        app: pizza-controller
+    spec:
+      serviceAccountName: {{ .Values.pizzaController.serviceAccount.name }}
+      containers:
+      - name: controller
+        image: "{{ .Values.pizzaController.image.repository }}:{{ .Values.pizzaController.image.tag }}"
+        imagePullPolicy: {{ .Values.pizzaController.image.pullPolicy }}
+        resources:
+          {{- toYaml .Values.pizzaController.resources | nindent 10 }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.pizzaController.serviceAccount.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "k8s-pizza-observability.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pizza-controller-role
+  labels:
+    app.kubernetes.io/part-of: k8s-pizza-observability
+rules:
+- apiGroups: ["pizza.bilalashraf.xyz"]
+  resources: ["pizzaorders"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["pizza.bilalashraf.xyz"]
+  resources: ["pizzaorders/status"]
+  verbs: ["get", "update", "patch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pizza-controller-rolebinding
+  labels:
+    app.kubernetes.io/part-of: k8s-pizza-observability
+subjects:
+- kind: ServiceAccount
+  name: pizza-controller-sa
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pizza-controller-role

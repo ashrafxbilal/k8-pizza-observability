@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza-controller
+  namespace: default
+  labels:
+    app: pizza-controller
+    app.kubernetes.io/part-of: k8s-pizza-observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pizza-controller
+  template:
+    metadata:
+      labels:
+        app: pizza-controller
+    spec:
+      serviceAccountName: pizza-controller-sa
+      containers:
+      - name: controller
+        image: ashrafxbilal/pizza-controller:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pizza-controller-sa
+  namespace: default
+  labels:
+    app.kubernetes.io/part-of: k8s-pizza-observability
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pizza-controller-role
+  labels:
+    app.kubernetes.io/part-of: k8s-pizza-observability
+rules:
+- apiGroups: ["pizza.bilalashraf.xyz"]
+  resources: ["pizzaorders"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["pizza.bilalashraf.xyz"]
+  resources: ["pizzaorders/status"]
+  verbs: ["get", "update", "patch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pizza-controller-rolebinding
+  labels:
+    app.kubernetes.io/part-of: k8s-pizza-observability
+subjects:
+- kind: ServiceAccount
+  name: pizza-controller-sa
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pizza-controller-role

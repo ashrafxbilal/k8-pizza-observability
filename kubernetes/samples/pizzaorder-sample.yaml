@@ -1,0 +1,24 @@
+apiVersion: pizza.bilalashraf.xyz/v1
+kind: PizzaOrder
+metadata:
+  name: k8s-cpu-alert-pizza
+  labels:
+    app.kubernetes.io/part-of: k8s-pizza-observability
+spec:
+  placeOrder: true
+  customer:
+    firstName: "${CUSTOMER_FIRST_NAME}"
+    lastName: "${CUSTOMER_LAST_NAME}"
+    email: "${CUSTOMER_EMAIL}"
+  address:
+    street: "${DELIVERY_STREET}"
+    city: "${DELIVERY_CITY}"
+    region: "${DELIVERY_STATE}"
+    postalCode: "${DELIVERY_ZIP}"
+    phone: "${CUSTOMER_PHONE}"
+  pizzas:
+    - size: "${PIZZA_SIZE}"
+      toppings:
+        - "${PIZZA_TYPE}"
+  paymentSecret:
+    name: dominos-payment-secret
