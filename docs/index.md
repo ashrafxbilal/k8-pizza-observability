@@ -1,22 +1,35 @@
 <div class="creator-badge">Created by Bilal</div>
 
-# Kubernetes Pizza Observability
-
-> Order pizza automatically when your Kubernetes cluster is under high load!
+<div class="hero">
+  <h1>Kubernetes Pizza Observability</h1>
+  <p>Order pizza automatically when your Kubernetes cluster is under high load!</p>
+</div>
 
 <script src="./assets/js/main.js"></script>
+<script src="./assets/js/bento-ui.js"></script>
 
-## Overview
-
-Kubernetes Pizza Observability is a fun yet practical project that combines infrastructure monitoring with automated pizza ordering. When your Kubernetes cluster experiences high CPU load, the system automatically orders pizza for your team to enjoy while they work on resolving the issues.
-
-## Inspiration
-
-This project was inspired by the [Terraform Dominos Provider](https://nat-henderson.github.io/terraform-provider-dominos/) created by Nat Henderson. The provider allows users to order Dominos pizza directly through Terraform, expanding infrastructure as code into the physical world. As they eloquently put it:
-
-> If you can use Terraform to summon folks with shovels to drop a fiber line, why shouldn't you be able to summon a driver with a pizza?
-
-We've taken this concept and integrated it with Kubernetes monitoring to create a system that automatically orders pizza when your infrastructure needs attention.
+<div class="bento-grid-featured">
+  <div class="card card-featured">
+    <h2 class="card-title">Overview</h2>
+    <p>Kubernetes Pizza Observability is a fun yet practical project that combines infrastructure monitoring with automated pizza ordering. When your Kubernetes cluster experiences high CPU load, the system automatically orders pizza for your team to enjoy while they work on resolving the issues.</p>
+    <div class="emoji-reactions">
+      <span class="emoji-reaction" data-emoji="🍕">🍕 <span class="count">0</span></span>
+      <span class="emoji-reaction" data-emoji="🚀">🚀 <span class="count">0</span></span>
+      <span class="emoji-reaction" data-emoji="🔥">🔥 <span class="count">0</span></span>
+    </div>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="💡">
+    <h3 class="card-title">Inspiration</h3>
+    <p>This project was inspired by the <a href="https://nat-henderson.github.io/terraform-provider-dominos/" class="tooltip" data-tooltip="Visit Terraform Dominos Provider">Terraform Dominos Provider</a> created by Nat Henderson.</p>
+  </div>
+  
+  <div class="card glass-card">
+    <h3 class="card-title">Quick Start</h3>
+    <p>Get started in minutes with our Helm chart:</p>
+    <pre><code>helm install pizza-observability ./helm/k8s-pizza-observability-chart</code></pre>
+  </div>
+</div>
 
 ## Architecture
 
@@ -72,20 +85,58 @@ We've taken this concept and integrated it with Kubernetes monitoring to create 
   </svg>
 </div>
 
-![Kubectl in action](kubectl.jpeg)
-*Managing Kubernetes resources with kubectl*
+<div class="bento-grid">
+  <div class="card card-emoji" data-emoji="📱">
+    <h3 class="card-title">Kubectl in Action</h3>
+    <img src="kubectl.jpeg" alt="Managing Kubernetes resources with kubectl" />
+    <p><em>Managing Kubernetes resources with kubectl</em></p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="💬">
+    <h3 class="card-title">Slack Notifications</h3>
+    <img src="slack-confirmation.jpeg" alt="Slack notification for pizza order confirmation" />
+    <p><em>Example of a Slack notification for pizza order confirmation</em></p>
+  </div>
+</div>
 
-### Workflow
+## Workflow
 
-1. Prometheus monitors your Kubernetes cluster metrics
-2. When CPU usage exceeds the configured threshold, an alert is triggered
-3. AlertManager routes the alert to the Azure Function
-4. The Azure Function creates a PizzaOrder custom resource
-5. The Pizza Controller processes the order and communicates with the Dominos API
-6. A Slack notification is sent for order confirmation
-   ![Slack Confirmation](slack-confirmation.jpeg)
-   *Example of a Slack notification for pizza order confirmation*
-7. Pizza is delivered to your specified address
+<div class="bento-grid">
+  <div class="card card-emoji" data-emoji="📊">
+    <h3 class="card-title">1. Monitor</h3>
+    <p>Prometheus monitors your Kubernetes cluster metrics</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="🚨">
+    <h3 class="card-title">2. Alert</h3>
+    <p>When CPU usage exceeds the configured threshold, an alert is triggered</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="📤">
+    <h3 class="card-title">3. Route</h3>
+    <p>AlertManager routes the alert to the Azure Function</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="🧩">
+    <h3 class="card-title">4. Create</h3>
+    <p>The Azure Function creates a PizzaOrder custom resource</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="🍕">
+    <h3 class="card-title">5. Order</h3>
+    <p>The Pizza Controller processes the order and communicates with the Dominos API</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="📱">
+    <h3 class="card-title">6. Notify</h3>
+    <p>A Slack notification is sent for order confirmation</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="🚚">
+    <h3 class="card-title">7. Deliver</h3>
+    <p>Pizza is delivered to your specified address</p>
+  </div>
+</div>
 
 ## Components
 
@@ -102,197 +153,79 @@ We've taken this concept and integrated it with Kubernetes monitoring to create 
   
   <div class="card card-emoji" data-emoji="⚡">
     <h3 class="card-title">Azure Function</h3>
-    <p>Processes alerts and creates PizzaOrder custom resources</p>
+    <p>Serverless function that receives alerts and creates PizzaOrder custom resources</p>
   </div>
   
-  <div class="card card-emoji" data-emoji="🍕">
+  <div class="card card-emoji" data-emoji="🧩">
+    <h3 class="card-title">Custom Resource Definition</h3>
+    <p>Defines the PizzaOrder resource type in your Kubernetes cluster</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="🎮">
     <h3 class="card-title">Pizza Controller</h3>
-    <p>Kubernetes controller that manages PizzaOrder custom resources</p>
+    <p>Kubernetes controller that watches for PizzaOrder resources and processes them</p>
   </div>
   
   <div class="card card-emoji" data-emoji="💬">
     <h3 class="card-title">Slack App</h3>
-    <p>Provides a user interface for confirming pizza orders</p>
+    <p>Sends notifications about pizza orders and delivery status</p>
   </div>
 </div>
 
-## Getting Started
+## Installation
 
-<div class="card card-feature card-large">
-  <h3 class="card-title">Prerequisites</h3>
-  <div class="bento-grid">
-    <div class="card">
-      <h4>Kubernetes</h4>
-      <p>AKS, GKE, EKS, or local like Minikube/Kind</p>
-    </div>
-    <div class="card">
-      <h4>Helm 3.x</h4>
-      <p>For deploying the application stack</p>
-    </div>
-    <div class="card">
-      <h4>kubectl</h4>
-      <p>Configured to access your cluster</p>
-    </div>
-    <div class="card">
-      <h4>Docker</h4>
-      <p>And Docker Compose for local development</p>
-    </div>
-    <div class="card">
-      <h4>Dominos Account</h4>
-      <p>For actual pizza ordering functionality</p>
-    </div>
+<div class="bento-grid">
+  <div class="card glass-card">
+    <h3 class="card-title">Prerequisites</h3>
+    <ul>
+      <li>Kubernetes cluster (v1.16+)</li>
+      <li>Helm 3</li>
+      <li>Prometheus & AlertManager</li>
+      <li>Azure subscription (for Azure Function)</li>
+      <li>Slack workspace with admin access</li>
+      <li>Dominos account with payment method</li>
+    </ul>
+  </div>
+  
+  <div class="card glass-card">
+    <h3 class="card-title">Helm Installation</h3>
+    <pre><code>git clone https://github.com/yourusername/k8s-pizza-observability.git
+cd k8s-pizza-observability
+helm install pizza-observability ./helm/k8s-pizza-observability-chart</code></pre>
+  </div>
+  
+  <div class="card glass-card">
+    <h3 class="card-title">Configuration</h3>
+    <p>Edit the <code>values.yaml</code> file to configure:</p>
+    <ul>
+      <li>Dominos API credentials</li>
+      <li>Delivery address</li>
+      <li>Pizza preferences</li>
+      <li>CPU threshold for alerts</li>
+      <li>Slack webhook URL</li>
+    </ul>
   </div>
 </div>
-
-### Quick Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/k8-pizza-observability.git
-cd k8-pizza-observability
-
-# Deploy with Helm
-helm install pizza-observability helm/k8s-pizza-observability-chart
-```
-
-## Configuration
-
-### Dominos Payment Configuration
-
-Create a secret with your Dominos payment information:
-
-```bash
-# Create from the example file
-cp kubernetes/dominos-payment-secret.example.yaml kubernetes/dominos-payment-secret.yaml
-
-# Edit with your information
-vim kubernetes/dominos-payment-secret.yaml
-
-# Apply to the cluster
-kubectl apply -f kubernetes/dominos-payment-secret.yaml
-```
-
-### Alert Thresholds
-
-You can customize the CPU threshold and duration in the Helm values:
-
-```yaml
-prometheus:
-  alertRules:
-    cpuThreshold: 80  # Percentage
-    duration: 5m      # Duration before alerting
-```
-
-## Project Structure
-
-```
-├── azure-function/       # Azure Function for processing alerts
-├── docs/                 # Documentation and diagrams
-├── helm/                 # Helm chart for Kubernetes deployment
-├── kubernetes/           # Kubernetes manifests and samples
-│   ├── controller/       # Pizza Order controller implementation
-│   ├── crds/             # Custom Resource Definitions
-│   └── samples/          # Sample resources
-├── scripts/              # Utility scripts
-├── slack/                # Slack app for order confirmation
-└── terraform/            # Infrastructure as Code for cloud deployment
-```
-
-## Component Details
-
-### Pizza Controller
-
-The controller follows the Kubernetes operator pattern and is built using the controller-runtime library. It consists of:
-
-1. **PizzaOrder CRD**: A custom resource definition that represents a pizza order
-2. **Reconciler**: The core logic that processes PizzaOrder resources
-3. **Dominos API Integration**: Code that interacts with Dominos to place and track orders
-4. **RBAC Configuration**: Service account and role bindings for proper permissions
-
-### Helm Charts
-
-The Helm charts provide a streamlined way to deploy all components of the system. The chart structure includes:
-
-```
-k8s-pizza-observability-chart/
-├── Chart.yaml             # Chart metadata
-├── values.yaml            # Default configuration values
-├── templates/             # Kubernetes manifest templates
-│   ├── _helpers.tpl       # Template helper functions
-│   ├── dominos-payment-secret.yaml  # Secret for Dominos payment
-│   ├── pizza-controller-deployment.yaml  # Pizza controller deployment
-│   ├── pizzaorders.yaml   # PizzaOrder CRD definition
-│   └── prometheus-values.yaml  # Prometheus configuration
-└── .helmignore           # Files to ignore when packaging
-```
-
-### Azure Function
-
-The Azure Function processes alerts from Prometheus and creates PizzaOrder custom resources. It includes:
-
-- HTTP trigger for receiving alerts
-- Kubernetes client for creating custom resources
-- Logic for determining pizza type based on alert severity
-
-### Terraform Infrastructure
-
-The Terraform configuration creates the necessary cloud infrastructure for the project, including:
-
-- Azure Kubernetes Service (AKS) cluster
-- Virtual Network and subnets
-- Azure Container Registry
-- Azure Function App
-
-## Limitations
-
-**Note:** The complete end-to-end workflow could not be tested in real-time because the Domino's Pizza API works primarily in the US and Canada. The system is designed to work with the API but may require adjustments based on your location.
-
-## Development
-
-### Adding Features
-
-The controller is designed to be extensible. Common enhancements include:
-
-- Adding support for more pizza customization options
-- Implementing additional payment methods
-- Creating a web UI for order management
-- Adding metrics for Prometheus monitoring
-
-### Testing Chart Changes
-
-```bash
-# Validate the chart
-helm lint helm/k8s-pizza-observability-chart
-
-# Test template rendering
-helm template k8s-pizza helm/k8s-pizza-observability-chart
-```
-
-## Troubleshooting
-
-### Debugging
-
-```bash
-# Check pod status
-kubectl get pods
-
-# View controller logs
-kubectl logs -f deployment/pizza-controller
-
-# Check Prometheus configuration
-kubectl get configmap -n monitoring prometheus-server -o yaml
-```
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+<div class="card glass-card">
+  <h3 class="card-title">How to Contribute</h3>
+  <p>We welcome contributions to the Kubernetes Pizza Observability project! Here's how you can help:</p>
+  <ol>
+    <li>Fork the repository</li>
+    <li>Create a feature branch</li>
+    <li>Make your changes</li>
+    <li>Submit a pull request</li>
+  </ol>
+  <p>Please ensure your code follows our style guidelines and includes appropriate tests.</p>
+</div>
 
-## License
-
-This project is unlicensed.
-
-## Acknowledgements
-
-- [Terraform Dominos Provider](https://nat-henderson.github.io/terraform-provider-dominos/) for the inspiration
-- The Kubernetes and Prometheus communities for their excellent tools
-- Dominos Pizza for their API (even if it's not officially supported)
+<div class="site-footer">
+  <p>© 2023 Kubernetes Pizza Observability</p>
+  <div class="footer-links">
+    <a href="https://github.com/yourusername/k8s-pizza-observability" class="footer-link">GitHub</a>
+    <a href="https://twitter.com/yourusername" class="footer-link">Twitter</a>
+    <a href="mailto:your.email@example.com" class="footer-link">Contact</a>
+  </div>
+</div>

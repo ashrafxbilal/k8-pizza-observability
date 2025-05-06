@@ -36,9 +36,18 @@ show_downloads: true
 logo: /assets/images/k8s-pizza-logo.svg
 favicon: /favicon.svg
 
+# Bento UI settings
+bento_ui:
+  enable_dark_mode: true
+  enable_custom_cursor: true
+  enable_emoji_reactions: true
+  enable_animations: true
+
 # External resources
 external_resources:
   - href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     type: "stylesheet"
   - href: "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Fira+Code&display=swap"
+    type: "stylesheet"
+  - href: "https://unpkg.com/aos@next/dist/aos.css"
     type: "stylesheet"
