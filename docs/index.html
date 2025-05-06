@@ -1,358 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>K8s Pizza Observability - Modern Kubernetes Monitoring</title>
-  <meta name="description" content="Order pizza automatically when your Kubernetes cluster is under high load!">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/bento.css">
-  
-  <!-- Open Graph / Social Media -->
-  <meta property="og:title" content="K8s Pizza Observability">
-  <meta property="og:description" content="Order pizza automatically when your Kubernetes cluster is under high load!">
-  <meta property="og:type" content="website">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K8s Pizza Observability</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Theme Toggle -->
-  <button class="theme-toggle" aria-label="Toggle dark mode">
-    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
-    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-    </svg>
-  </button>
-
-  <div class="cursor"></div>
-  <div class="cursor-follower"></div>
-
-  <div class="creator-badge">Created by Bilal</div>
-
-  <header class="hero">
     <div class="container">
-      <div class="logo-container">
-        <img src="assets/images/k8s-pizza-logo.svg" alt="K8s Pizza Logo" class="logo">
-      </div>
-      <h1 class="glitch" data-text="K8s Pizza Observability">K8s Pizza Observability</h1>
-      <p class="tagline">Order pizza automatically when your Kubernetes cluster is under high load!</p>
-      <div class="cta-buttons">
-        <a href="#get-started" class="btn btn-primary">Get Started</a>
-        <a href="https://github.com/yourusername/k8-pizza-observability" class="btn btn-secondary">GitHub</a>
-      </div>
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo">K8s 🍕</div>
+            <div class="creator-profile">
+                <img src="assets/images/97957478.jpg" alt="Bilal Ashraf" class="creator-image">
+                <span class="creator-name">Cooked up by Bilal Ashraf 👨‍💻</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#terminal">Terminal</a></li>
+                    <li><a href="#components">Components</a></li>
+                    <li><a href="#docs">Docs</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="glitch" data-text="K8s Pizza Observability">K8s Pizza Observability</h1>
+                <p class="subtitle">Get Dominos when CPU is stressed 🔥</p>
+
+                <div class="cta-buttons">
+                    <a href="#terminal" class="cta-primary">Try Commands</a>
+                    <a href="https://github.com/bilal/k8-pizza-observability" class="cta-secondary">GitHub</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="pizza-spinner"></div>
+            </div>
+        </section>
+
+        <!-- About Section with Bento Grid -->
+        <section id="about" class="about-section">
+            <h2 class="section-title">SYSTEM OVERVIEW <span class="emoji">⚙️</span></h2>
+            <div class="brutalist-decoration"><pre><code>helm install k8s-pizza helm/k8s-pizza-observability-chart</code></pre></div>
+            
+            <div class="bento-grid">
+                <div class="bento-item feature">
+                    <h3>Core Concept</h3>
+                    <p>Kubernetes Pizza Observability serves up pizza orders when your cluster's CPU usage exceeds a threshold.</p>
+                    <p>This project combines infrastructure monitoring with real-world actions, demonstrating a fun and practical application of observability principles.</p>
+
+                </div>
+                
+                <div class="bento-item workflow">
+                    <h3>Workflow</h3>
+                    <ol>
+                        <li><strong>Monitoring:</strong> Prometheus tracks CPU usage</li>
+                        <li><strong>Alerting:</strong> AlertManager triggers when CPU > 80%</li>
+                        <li><strong>Processing:</strong> Azure Function prepares order</li>
+                        <li><strong>Confirmation:</strong> Slack app for approval</li>
+                        <li><strong>Ordering:</strong> Places order with Domino's API</li>
+                        <li><strong>Tracking:</strong> Order status in K8s resources</li>
+                    </ol>
+
+                </div>
+                
+                <div class="bento-item tech-stack">
+                    <h3>Technology Stack</h3>
+                    <ul>
+                        <li><strong>Kubernetes:</strong> Orchestrates containers & hosts custom PizzaOrder CRD</li>
+                        <li><strong>Go:</strong> Powers the custom controller with concurrent order processing</li>
+                        <li><strong>Node.js:</strong> Drives Azure Function webhook & Slack interactive messages</li>
+                        <li><strong>Prometheus:</strong> Collects & alerts on CPU metrics with PromQL queries</li>
+                        <li><strong>Terraform:</strong> Provisions Azure resources with declarative IaC</li>
+                        <li><strong>Helm:</strong> Packages the entire solution for one-command deployment</li>
+                    </ul>
+                </div>
+                
+                <div class="bento-item file-structure">
+                    <h3>Project Structure</h3>
+                    <p>Modular organization with clear separation of concerns:</p>
+                    <div class="file-structure-diagram">
+                        <pre>
+/k8-pizza-observability
+├── 📦 azure-function/    # Serverless function for order processing
+├── 📄 docs/              # Documentation and website
+├── ⚓ helm/              # Deployment charts
+│   └── 📊 k8s-pizza-observability-chart/
+├── 🛞 kubernetes/
+│   ├── 🎮 controller/    # Go-based pizza controller
+│   ├── 📝 crds/          # Custom Resource Definitions
+│   └── 🧩 samples/       # Example PizzaOrder resources
+├── 🔧 scripts/           # Utility scripts
+├── 💬 slack/             # Slack app integration
+└── 🏗️ terraform/         # Infrastructure as code
+                        </pre>
+                    </div>
+                </div>
+                
+
+            </div>
+        </section>
+
+        <!-- Interactive Terminal Section -->
+        <section id="terminal" class="terminal-section">
+            <h2 class="section-title">Interactive Terminal <span class="emoji">💻</span></h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="terminal-button close"></span>
+                        <span class="terminal-button minimize"></span>
+                        <span class="terminal-button maximize"></span>
+                    </div>
+                    <div class="terminal-title">kubectl commands</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-output" id="terminal-output">
+                        <p><span class="prompt">$</span> Welcome to K8s Pizza Terminal! Try some commands below:</p>
+                    </div>
+                    <div class="terminal-input-line">
+                        <span class="prompt">$</span>
+                        <input type="text" id="terminal-input" placeholder="Type a command..." autocomplete="off">
+                    </div>
+                </div>
+                <div class="terminal-commands">
+                    <button class="command-btn" data-command="kubectl get pizzaorder">kubectl get pizzaorder</button>
+                    <button class="command-btn" data-command="kubectl apply -f samples/pizzaorder-sample.yaml">kubectl apply -f sample</button>
+                    <button class="command-btn" data-command="kubectl describe pizzaorder pepperoni-special">kubectl describe order</button>
+                    <button class="command-btn" data-command="kubectl delete pizzaorder pepperoni-special">kubectl delete order</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Components Section -->
+        <section id="components" class="components-section">
+            <h2 class="section-title">Components <span class="emoji">🧩</span></h2>
+            
+            <div class="bento-grid components-grid">
+                <div class="bento-item component-card">
+                    <div class="component-icon">📊</div>
+                    <h3>Prometheus & Grafana</h3>
+                    <p>Monitors cluster metrics and visualizes CPU usage</p>
+                    <div class="component-tag">Monitoring</div>
+                </div>
+                
+                <div class="bento-item component-card">
+                    <div class="component-icon">🚨</div>
+                    <h3>AlertManager</h3>
+                    <p>Routes alerts to the Azure Function</p>
+                    <div class="component-tag">Alerting</div>
+                </div>
+                
+                <div class="bento-item component-card">
+                    <div class="component-icon">⚡</div>
+                    <h3>Azure Function</h3>
+                    <p>Processes alerts and creates pizza orders</p>
+                    <div class="component-tag">Processing</div>
+                </div>
+                
+                <div class="bento-item component-card">
+                    <div class="component-icon">🎮</div>
+                    <h3>Pizza Controller</h3>
+                    <p>Kubernetes controller that manages PizzaOrder custom resources</p>
+                    <div class="component-tag">Controller</div>
+                </div>
+                
+                <div class="bento-item component-card">
+                    <div class="component-icon">💬</div>
+                    <h3>Slack App</h3>
+                    <p>Provides a user interface for confirming pizza orders</p>
+                    <div class="component-tag">UI</div>
+                </div>
+                
+
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section id="docs" class="docs-section">
+            <h2 class="section-title">Documentation <span class="emoji">📚</span></h2>
+            
+            <div class="bento-grid docs-grid">
+                <div class="bento-item doc-card">
+                    <h3>Setup Guide</h3>
+                    <p>Step-by-step instructions for deploying the system</p>
+                    <a href="setup-guide.html" class="doc-link">Read Guide</a>
+                </div>
+                
+                <div class="bento-item doc-card">
+                    <h3>Controller</h3>
+                    <p>Details on the Pizza Order Controller implementation</p>
+                    <a href="controller.html" class="doc-link">View Docs</a>
+                </div>
+                
+                <div class="bento-item doc-card">
+                    <h3>Slack Integration</h3>
+                    <p>How to set up and use the Slack app</p>
+                    <a href="slack-integration.html" class="doc-link">Learn More</a>
+                </div>
+                
+                <div class="bento-item doc-card">
+                    <h3>Helm Charts</h3>
+                    <p>Configuration options for Helm deployment</p>
+                    <a href="helm-charts.html" class="doc-link">Explore</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">K8s 🍕</div>
+                <div class="footer-links">
+                    <a href="https://github.com/bilal/k8-pizza-observability">GitHub</a>
+                    <a href="#about">About</a>
+                    <a href="#components">Components</a>
+                    <a href="#docs">Docs</a>
+                </div>
+                <div class="footer-credit">
+                    <p>Built by Bilal Ashraf</p>
+                </div>
+            </div>
+        </footer>
     </div>
-    <div class="hero-shapes">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-    </div>
-  </header>
 
-  <main class="container">
-    <!-- Overview Section -->
-    <section class="bento-grid">
-      <div class="bento-item featured" data-aos="fade-up">
-        <span class="emoji">🍕</span>
-        <h2>Overview</h2>
-        <p>Kubernetes Pizza Observability is a fun yet practical project that combines infrastructure monitoring with automated pizza ordering. When your Kubernetes cluster experiences high CPU load, the system automatically orders pizza for your team to enjoy while they work on resolving the issues.</p>
-        <div class="reactions">
-          <button class="reaction" data-emoji="🔥"><span>🔥</span><span class="count">0</span></button>
-          <button class="reaction" data-emoji="🚀"><span>🚀</span><span class="count">0</span></button>
-          <button class="reaction" data-emoji="💯"><span>💯</span><span class="count">0</span></button>
-        </div>
-      </div>
-      
-      <div class="bento-item" data-aos="fade-up" data-aos-delay="100">
-        <span class="emoji">💡</span>
-        <h3>Inspiration</h3>
-        <p>Inspired by the <a href="https://nat-henderson.github.io/terraform-provider-dominos/" target="_blank">Terraform Dominos Provider</a> created by Nat Henderson.</p>
-      </div>
-      
-      <div class="bento-item glass" data-aos="fade-up" data-aos-delay="200">
-        <span class="emoji">⚡</span>
-        <h3>Quick Start</h3>
-        <div class="code-block">
-          <pre><code>helm install pizza-observability ./helm/k8s-pizza-observability-chart</code></pre>
-          <button class="copy-btn" aria-label="Copy code">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Architecture Section -->
-    <section id="architecture">
-      <h2 class="section-title" data-aos="fade-up">Architecture</h2>
-      <div class="architecture-diagram" data-aos="zoom-in">
-        <img src="architecture.svg" alt="K8s Pizza Observability Architecture" class="full-width-img">
-      </div>
-    </section>
-
-    <!-- Workflow Section -->
-    <section id="workflow">
-      <h2 class="section-title" data-aos="fade-up">Workflow</h2>
-      <div class="bento-grid workflow-grid">
-        <div class="bento-item" data-aos="fade-up">
-          <span class="step-number">1</span>
-          <span class="emoji">📊</span>
-          <h3>Monitor</h3>
-          <p>Prometheus monitors your Kubernetes cluster metrics</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="50">
-          <span class="step-number">2</span>
-          <span class="emoji">🚨</span>
-          <h3>Alert</h3>
-          <p>When CPU usage exceeds the configured threshold, an alert is triggered</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="100">
-          <span class="step-number">3</span>
-          <span class="emoji">📤</span>
-          <h3>Route</h3>
-          <p>AlertManager routes the alert to the Azure Function</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="150">
-          <span class="step-number">4</span>
-          <span class="emoji">🧩</span>
-          <h3>Create</h3>
-          <p>The Azure Function creates a PizzaOrder custom resource</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="200">
-          <span class="step-number">5</span>
-          <span class="emoji">🍕</span>
-          <h3>Order</h3>
-          <p>The Pizza Controller processes the order and communicates with the Dominos API</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="250">
-          <span class="step-number">6</span>
-          <span class="emoji">💬</span>
-          <h3>Notify</h3>
-          <p>A Slack notification is sent for order confirmation</p>
-          <img src="slack-confirmation.jpeg" alt="Slack notification" class="workflow-img">
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="300">
-          <span class="step-number">7</span>
-          <span class="emoji">🚚</span>
-          <h3>Deliver</h3>
-          <p>Pizza is delivered to your specified address</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Components Section -->
-    <section id="components">
-      <h2 class="section-title" data-aos="fade-up">Components</h2>
-      <div class="bento-grid components-grid">
-        <div class="bento-item" data-aos="fade-up">
-          <span class="emoji">📊</span>
-          <h3>Prometheus & Grafana</h3>
-          <p>Monitors cluster metrics and visualizes CPU usage in real-time dashboards</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="50">
-          <span class="emoji">🚨</span>
-          <h3>AlertManager</h3>
-          <p>Routes alerts to the Azure Function when CPU thresholds are exceeded</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="100">
-          <span class="emoji">⚡</span>
-          <h3>Azure Function</h3>
-          <p>Serverless function that receives alerts and creates PizzaOrder custom resources</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="150">
-          <span class="emoji">🧩</span>
-          <h3>Custom Resource Definition</h3>
-          <p>Defines the PizzaOrder resource type in your Kubernetes cluster</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="200">
-          <span class="emoji">🎮</span>
-          <h3>Pizza Controller</h3>
-          <p>Kubernetes controller that watches for PizzaOrder resources and processes them</p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="250">
-          <span class="emoji">💬</span>
-          <h3>Slack App</h3>
-          <p>Sends notifications about pizza orders and delivery status</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Installation Section -->
-    <section id="get-started">
-      <h2 class="section-title" data-aos="fade-up">Installation</h2>
-      <div class="bento-grid">
-        <div class="bento-item glass" data-aos="fade-up">
-          <span class="emoji">📋</span>
-          <h3>Prerequisites</h3>
-          <ul class="checklist">
-            <li>Kubernetes cluster (v1.16+)</li>
-            <li>Helm 3</li>
-            <li>Prometheus & AlertManager</li>
-            <li>Azure subscription</li>
-            <li>Slack workspace with admin access</li>
-            <li>Dominos account with payment method</li>
-          </ul>
-        </div>
-        
-        <div class="bento-item glass" data-aos="fade-up" data-aos-delay="100">
-          <span class="emoji">⚙️</span>
-          <h3>Helm Installation</h3>
-          <div class="code-block">
-            <pre><code>git clone https://github.com/yourusername/k8s-pizza-observability.git
-cd k8s-pizza-observability
-helm install pizza-observability ./helm/k8s-pizza-observability-chart</code></pre>
-            <button class="copy-btn" aria-label="Copy code">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <div class="bento-item glass" data-aos="fade-up" data-aos-delay="200">
-          <span class="emoji">🔧</span>
-          <h3>Configuration</h3>
-          <p>Edit the <code>values.yaml</code> file to configure:</p>
-          <ul>
-            <li>Dominos API credentials</li>
-            <li>Delivery address</li>
-            <li>Pizza preferences</li>
-            <li>CPU threshold for alerts</li>
-            <li>Slack webhook URL</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Demo Section -->
-    <section id="demo">
-      <h2 class="section-title" data-aos="fade-up">Demo</h2>
-      <div class="bento-grid">
-        <div class="bento-item" data-aos="fade-up">
-          <span class="emoji">📱</span>
-          <h3>Kubectl in Action</h3>
-          <img src="kubectl.jpeg" alt="Managing Kubernetes resources with kubectl" class="demo-img">
-          <p><em>Managing Kubernetes resources with kubectl</em></p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="100">
-          <span class="emoji">📈</span>
-          <h3>Testing Workflow</h3>
-          <img src="testing-workflow.svg" alt="Testing workflow diagram" class="demo-img">
-          <p><em>Testing the complete workflow</em></p>
-        </div>
-        
-        <div class="bento-item" data-aos="fade-up" data-aos-delay="200">
-          <span class="emoji">🌎</span>
-          <h3>US/Canada Workflow</h3>
-          <img src="us-canada-workflow.svg" alt="US/Canada workflow diagram" class="demo-img">
-          <p><em>Workflow for US and Canada regions</em></p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contributing Section -->
-    <section id="contributing">
-      <h2 class="section-title" data-aos="fade-up">Contributing</h2>
-      <div class="bento-item glass full-width" data-aos="fade-up">
-        <h3>How to Contribute</h3>
-        <p>We welcome contributions to the Kubernetes Pizza Observability project! Here's how you can help:</p>
-        <ol>
-          <li>Fork the repository</li>
-          <li>Create a feature branch</li>
-          <li>Make your changes</li>
-          <li>Submit a pull request</li>
-        </ol>
-        <p>Please ensure your code follows our style guidelines and includes appropriate tests.</p>
-        <a href="https://github.com/yourusername/k8-pizza-observability/blob/main/CONTRIBUTING.md" class="btn btn-sm">Read Contributing Guidelines</a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <img src="assets/images/k8s-pizza-logo.svg" alt="K8s Pizza Logo" class="footer-logo-img">
-          <p>K8s Pizza Observability</p>
-        </div>
-        <div class="footer-links">
-          <div class="footer-links-column">
-            <h4>Project</h4>
-            <ul>
-              <li><a href="#">Overview</a></li>
-              <li><a href="#architecture">Architecture</a></li>
-              <li><a href="#workflow">Workflow</a></li>
-              <li><a href="#components">Components</a></li>
-            </ul>
-          </div>
-          <div class="footer-links-column">
-            <h4>Resources</h4>
-            <ul>
-              <li><a href="#get-started">Installation</a></li>
-              <li><a href="https://github.com/yourusername/k8-pizza-observability/wiki">Documentation</a></li>
-              <li><a href="https://github.com/yourusername/k8-pizza-observability/issues">Issues</a></li>
-              <li><a href="#contributing">Contributing</a></li>
-            </ul>
-          </div>
-          <div class="footer-links-column">
-            <h4>Connect</h4>
-            <ul>
-              <li><a href="https://github.com/yourusername/k8-pizza-observability">GitHub</a></li>
-              <li><a href="https://twitter.com/yourusername">Twitter</a></li>
-              <li><a href="https://discord.gg/yourinvite">Discord</a></li>
-              <li><a href="mailto:your.email@example.com">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2023 Kubernetes Pizza Observability. Made with 🍕 by the community.</p>
-        <div class="social-links">
-          <a href="https://github.com/yourusername/k8-pizza-observability" aria-label="GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-            </svg>
-          </a>
-          <a href="https://twitter.com/yourusername" aria-label="Twitter">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- JavaScript -->
-  <script src="assets/js/bento.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slack Integration - K8s Pizza Observability</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/doc-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo"><a href="index.html">K8s 🍕</a></div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#terminal">Terminal</a></li>
+                    <li><a href="index.html#components">Components</a></li>
+                    <li><a href="index.html#docs">Docs</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Documentation Content -->
+        <section class="doc-content-section">
+            <h1 class="doc-title">Slack Integration <span class="emoji">💬</span></h1>
+            
+            <div class="doc-content">
+                <h2>Slack Integration for Pizza Ordering: Detailed Documentation</h2>
+                
+                <h3>Overview</h3>
+                <p>This component provides a Slack application designed to integrate with the Kubernetes Pizza Observability project. The primary purpose of this Slack app is to provide a human-in-the-loop confirmation step for pizza orders triggered by cluster alerts. It enhances the system by allowing team members to review and approve or reject automated pizza orders via an interactive Slack message, preventing unwanted orders and adding a layer of control.</p>
+                
+                <div class="image-container">
+                    <img src="slack-confirmation.jpeg" alt="Slack Confirmation Interface" class="doc-image">
+                    <p class="image-caption">Example of a Slack confirmation message for a pizza order</p>
+                </div>
+                
+                <h3>Features</h3>
+                <ul>
+                    <li><strong>Alert Notifications</strong>: Delivers real-time, actionable notifications to a designated Slack channel when a high CPU usage alert (or other configured alert) triggers a potential pizza order.</li>
+                    <li><strong>Interactive Order Confirmation</strong>: Presents users with interactive buttons ("Approve Pizza Order" / "Reject Pizza Order") directly within Slack to decide the fate of an automated order.</li>
+                    <li><strong>Order Status Updates (Future Enhancement)</strong>: Could be extended to provide updates on the pizza order status (e.g., preparation, baking, out for delivery) back into Slack.</li>
+                    <li><strong>Slash Commands (Optional)</strong>: Supports custom slash commands for actions like manually checking cluster status or triggering a test pizza order (if implemented).</li>
+                </ul>
+                
+                <h3>Architecture</h3>
+                <p>The Slack app is a Node.js application built using the Bolt for JavaScript framework. Its key architectural components include:</p>
+                
+                <ol>
+                    <li><strong>Bolt App (<code>app.js</code> or <code>app-http.js</code>)</strong>: The main application instance that initializes the Bolt framework, configures listeners for Slack events, actions, and commands.</li>
+                    <li><strong>Event Handlers</strong>: Functions that process incoming events from Slack, such as <code>app_mention</code> or messages in subscribed channels.</li>
+                    <li><strong>Action Handlers</strong>: Functions that respond to user interactions with interactive components, like button clicks from the order confirmation message.</li>
+                    <li><strong>Command Handlers</strong>: Functions that execute logic when a user invokes a registered slash command.</li>
+                    <li><strong>Message Payloads</strong>: JSON structures defining the content and layout of messages sent to Slack, including interactive elements (buttons, menus).</li>
+                    <li><strong>API Integration</strong>: Logic to communicate with:
+                        <ul>
+                            <li><strong>Azure Function</strong>: To signal approval or rejection of a pizza order, which then instructs the Kubernetes Pizza Controller.</li>
+                            <li><strong>Kubernetes API (Optional)</strong>: For slash commands that might query cluster status or <code>PizzaOrder</code> resources directly.</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>Setup and Configuration</h3>
+                
+                <h4>Prerequisites</h4>
+                <ul>
+                    <li>A Slack Workspace where you have permissions to install and configure apps.</li>
+                    <li>Node.js (version 14.x or later recommended).</li>
+                    <li><code>npm</code> or <code>yarn</code> for package management.</li>
+                    <li>A publicly accessible URL for your Slack app to receive events from Slack. For local development, <code>ngrok</code> is highly recommended. For production, this will be the URL of your deployed application (e.g., on a server, container platform, or serverless function).</li>
+                </ul>
+                
+                <h4>Step 1: Create a Slack App</h4>
+                <ol>
+                    <li>Navigate to the <a href="https://api.slack.com/apps" target="_blank">Slack API Apps page</a>.</li>
+                    <li>Click <strong>"Create New App"</strong>.</li>
+                    <li>Choose <strong>"From scratch"</strong>.</li>
+                    <li>Enter an <strong>App Name</strong> (e.g., "K8s Pizza Bot") and select your <strong>Development Slack Workspace</strong>.</li>
+                    <li>Click <strong>"Create App"</strong>.</li>
+                </ol>
+                
+                <h4>Step 2: Configure App Features & Permissions</h4>
+                <p>Once the app is created, you'll need to configure its features from the app's settings page (sidebar navigation):</p>
+                
+                <ul>
+                    <li><strong>OAuth & Permissions</strong>:
+                        <ul>
+                            <li>Scroll down to <strong>"Scopes"</strong>.</li>
+                            <li>Under <strong>"Bot Token Scopes"</strong>, add the following essential scopes:
+                                <ul>
+                                    <li><code>chat:write</code>: Allows the app to send messages as itself.</li>
+                                    <li><code>commands</code>: Allows the app to register and respond to slash commands.</li>
+                                    <li><em>(Optional)</em> <code>chat:write.public</code>: To write to public channels it's not a member of.</li>
+                                    <li><em>(Optional)</em> <code>users:read</code>: If you need to look up user information.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Slash Commands</strong> (If you plan to use them):
+                        <ol>
+                            <li>Go to <strong>"Slash Commands"</strong> in the sidebar.</li>
+                            <li>Click <strong>"Create New Command"</strong>.</li>
+                            <li>Fill in the details for each command:
+                                <ul>
+                                    <li><strong>Command</strong>: e.g., <code>/k8s-pizza-approve</code></li>
+                                    <li><strong>Request URL</strong>: <code>https://YOUR_PUBLIC_APP_URL/slack/commands</code> (replace <code>YOUR_PUBLIC_APP_URL</code>)</li>
+                                    <li><strong>Short Description</strong>: A brief explanation of the command.</li>
+                                    <li>Click <strong>"Save"</strong>.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                    <li><strong>Interactive Components</strong>:
+                        <ol>
+                            <li>Go to <strong>"Interactivity & Shortcuts"</strong> in the sidebar.</li>
+                            <li>Toggle <strong>"Interactivity"</strong> to <strong>On</strong>.</li>
+                            <li>Set the <strong>Request URL</strong>: <code>https://YOUR_PUBLIC_APP_URL/slack/actions</code> (replace <code>YOUR_PUBLIC_APP_URL</code>). This URL will receive payloads when users click buttons or interact with other components.</li>
+                            <li>Click <strong>"Save Changes"</strong>.</li>
+                        </ol>
+                    </li>
+                    <li><strong>Event Subscriptions</strong> (If your app needs to listen to events like mentions or messages):
+                        <ol>
+                            <li>Go to <strong>"Event Subscriptions"</strong> in the sidebar.</li>
+                            <li>Toggle <strong>"Enable Events"</strong> to <strong>On</strong>.</li>
+                            <li>Set the <strong>Request URL</strong>: <code>https://YOUR_PUBLIC_APP_URL/slack/events</code> (replace <code>YOUR_PUBLIC_APP_URL</code>). Slack will verify this URL.</li>
+                            <li>Under <strong>"Subscribe to bot events"</strong>, add events your app needs to listen to (e.g., <code>app_mention</code> if you want it to respond to mentions).</li>
+                            <li>Click <strong>"Save Changes"</strong>.</li>
+                        </ol>
+                    </li>
+                </ul>
+                
+                <h4>Step 3: Install App to Workspace</h4>
+                <ol>
+                    <li>Go to <strong>"Basic Information"</strong> in the sidebar.</li>
+                    <li>Scroll down to <strong>"Install your app"</strong> and click <strong>"Install to Workspace"</strong> (or "Reinstall app" if you've made permission changes).</li>
+                    <li>Review the permissions and click <strong>"Allow"</strong>. This will generate your <strong>Bot User OAuth Token</strong> (<code>xoxb-...</code>).</li>
+                </ol>
+                
+                <h4>Step 4: Environment Configuration</h4>
+                <p>Your Node.js application will require environment variables to connect to Slack and other services. Create a <code>.env</code> file in the <code>slack/</code> directory (this file should be in your <code>.gitignore</code> to avoid committing secrets).</p>
+                
+                <div class="code-block">
+                    <pre><code># Slack App Credentials
+SLACK_BOT_TOKEN="xoxb-YOUR_SLACK_BOT_TOKEN" # Found under "OAuth & Permissions" after installing the app
+SLACK_SIGNING_SECRET="YOUR_SLACK_SIGNING_SECRET" # Found under "Basic Information" -> App Credentials
+
+# Port for the Slack app to run on
+PORT=3000 # Or any other port you prefer
+
+# URL of your Azure Function (or other alert handler)
+# This is where the Slack app will send the approval/rejection signal
+AZURE_FUNCTION_URL="https://YOUR_AZURE_FUNCTION_APP_NAME.azurewebsites.net/api/HttpPizzaOrderConfirmationHandler" # Example URL
+
+# (Optional) Kubernetes API details if slash commands interact directly with the cluster
+# KUBERNETES_API_URL="https://YOUR_K8S_API_SERVER_URL"
+# KUBERNETES_TOKEN="YOUR_K8S_SERVICE_ACCOUNT_TOKEN"</code></pre>
+                </div>
+                
+                <h4>Step 5: Application Code (<code>app.js</code> / <code>app-http.js</code>)</h4>
+                <p>Ensure your <code>app.js</code> (or <code>app-http.js</code> if using HTTP mode for serverless environments) is configured to:</p>
+                
+                <ul>
+                    <li>Initialize the Bolt app with the <code>SLACK_BOT_TOKEN</code> and <code>SLACK_SIGNING_SECRET</code>.</li>
+                    <li>Listen for incoming HTTP requests from Slack (for events, actions, commands) on the specified <code>PORT</code>.</li>
+                    <li>Handle interactive button clicks (e.g., "Approve", "Reject") by:
+                        <ul>
+                            <li>Acknowledging the interaction.</li>
+                            <li>Sending an HTTP request to the <code>AZURE_FUNCTION_URL</code> with the decision.</li>
+                            <li>Updating the original Slack message to reflect the action taken (e.g., "Order Approved by @user").</li>
+                        </ul>
+                    </li>
+                    <li>(If applicable) Handle slash commands.</li>
+                </ul>
+                
+                <h4>Step 6: Installation & Running the App</h4>
+                <div class="code-block">
+                    <pre><code># Navigate to the slack directory
+cd slack
+
+# Install dependencies
+npm install
+
+# Start the application
+npm start</code></pre>
+                </div>
+                
+                <h3>Deployment</h3>
+                
+                <h4>Using Docker (Example)</h4>
+                <ol>
+                    <li><strong>Dockerfile</strong>: Ensure you have a <code>Dockerfile</code> in the <code>slack/</code> directory similar to this:
+                        <div class="code-block">
+                            <pre><code>FROM node:16-alpine
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000 # Or your configured PORT
+CMD [ "node", "app.js" ] # Or app-http.js</code></pre>
+                        </div>
+                    </li>
+                    <li><strong>Build and Run</strong>:
+                        <div class="code-block">
+                            <pre><code># Build the Docker image
+docker build -t k8s-pizza-slack-app .
+
+# Run the container (ensure .env file is available or pass env vars directly)
+docker run -d -p 3000:3000 --env-file .env k8s-pizza-slack-app</code></pre>
+                        </div>
+                    </li>
+                </ol>
+                
+                <h4>Kubernetes Deployment (Example)</h4>
+                <ol>
+                    <li>Create a Kubernetes <code>Deployment</code> and <code>Service</code> manifest for the Slack app.</li>
+                    <li>Store <code>SLACK_BOT_TOKEN</code> and <code>SLACK_SIGNING_SECRET</code> as Kubernetes <code>Secrets</code> and mount them as environment variables into the pod.</li>
+                    <li>Ensure the <code>Service</code> is exposed publicly (e.g., via an Ingress controller) so Slack can reach its endpoints.</li>
+                    <li><strong>Example <code>slack-app-deployment.yaml</code> (simplified):</strong>
+                        <div class="code-block">
+                            <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slack-app
+  namespace: k8s-pizza
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slack-app
+  template:
+    metadata:
+      labels:
+        app: slack-app
+    spec:
+      containers:
+      - name: slack-app
+        image: your-registry/k8s-pizza-slack-app:latest # Your Docker image
+        ports:
+        - containerPort: 3000
+        env:
+        - name: SLACK_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: slack-credentials
+              key: botToken
+        - name: SLACK_SIGNING_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: slack-credentials
+              key: signingSecret
+        - name: AZURE_FUNCTION_URL
+          value: "YOUR_AZURE_FUNCTION_URL"
+        - name: PORT
+          value: "3000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: slack-app-service
+  namespace: k8s-pizza
+spec:
+  selector:
+    app: slack-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: ClusterIP # Use LoadBalancer or Ingress for external access</code></pre>
+                        </div>
+                    </li>
+                </ol>
+                
+                <h3>Usage Flow</h3>
+                <ol>
+                    <li><strong>Alert Trigger</strong>: Prometheus detects high CPU usage, AlertManager fires an alert to the Azure Function.</li>
+                    <li><strong>Azure Function Action</strong>: The Azure Function processes the alert and (instead of directly ordering) sends an interactive message to the configured Slack channel via the Slack app. This message includes details of the potential order and "Approve" / "Reject" buttons.</li>
+                    <li><strong>User Interaction</strong>: A team member clicks "Approve" or "Reject" in Slack.</li>
+                    <li><strong>Slack App Handling</strong>: The Slack app receives the button click payload.
+                        <ul>
+                            <li>It acknowledges the click.</li>
+                            <li>It sends a signal (e.g., an HTTP POST request) to the Azure Function with the user's decision and relevant order details.</li>
+                            <li>It updates the original Slack message (e.g., "Order approved by @User. Processing...").</li>
+                        </ul>
+                    </li>
+                    <li><strong>Azure Function Finalizes</strong>: The Azure Function receives the decision:
+                        <ul>
+                            <li>If <strong>approved</strong>, it proceeds to create the <code>PizzaOrder</code> CR in Kubernetes, which the Pizza Controller then picks up to place the actual Dominos order.</li>
+                            <li>If <strong>rejected</strong>, it logs the rejection and takes no further action regarding pizza ordering.</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>Troubleshooting</h3>
+                <ul>
+                    <li><strong>App Not Receiving Events/Actions from Slack</strong>:
+                        <ul>
+                            <li>Verify that your <strong>Request URLs</strong> in the Slack app configuration are correct and publicly accessible.</li>
+                            <li>If using <code>ngrok</code>, ensure it's running and the URL in Slack settings matches the <code>ngrok</code> forwarding URL.</li>
+                            <li>Check your application logs for any errors on startup or when receiving requests.</li>
+                            <li>Ensure your server/firewall isn't blocking requests from Slack's IP ranges.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Authentication/Authorization Errors (e.g., <code>not_authed</code>, <code>invalid_auth</code>)</strong>:
+                        <ul>
+                            <li>Double-check that <code>SLACK_BOT_TOKEN</code> and <code>SLACK_SIGNING_SECRET</code> are correct in your environment configuration.</li>
+                            <li>Ensure the necessary Bot Token Scopes are added in the Slack app settings.</li>
+                            <li>If you reinstalled the app, the bot token might have changed.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Slash Commands Not Working</strong>:
+                        <ul>
+                            <li>Verify the Request URL for Slash Commands is correct.</li>
+                            <li>Ensure the <code>commands</code> scope is added.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Interaction with Azure Function Failing</strong>:
+                        <ul>
+                            <li>Check Slack app logs for errors when trying to send requests to <code>AZURE_FUNCTION_URL</code>.</li>
+                            <li>Ensure <code>AZURE_FUNCTION_URL</code> is correct and the Azure Function is running and accessible.</li>
+                            <li>Verify any authentication mechanisms between the Slack app and Azure Function.</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4>Viewing Logs</h4>
+                <ul>
+                    <li><strong>Local Node.js App</strong>: Check the console output where you ran <code>npm start</code>.</li>
+                    <li><strong>Docker Container</strong>: <code>docker logs &lt;container_id_or_name&gt;</code></li>
+                    <li><strong>Kubernetes Pod</strong>: <code>kubectl logs -n k8s-pizza &lt;slack-app-pod-name&gt;</code></li>
+                </ul>
+                
+                <h3>Security Considerations</h3>
+                <ul>
+                    <li><strong>Signing Secret Validation</strong>: Always validate incoming requests from Slack using the <code>SLACK_SIGNING_SECRET</code> to ensure they are genuine. Bolt for JavaScript handles this automatically if configured correctly.</li>
+                    <li><strong>Token Security</strong>: Store <code>SLACK_BOT_TOKEN</code> and other secrets securely. Do not hardcode them. Use environment variables and, in production Kubernetes, use Kubernetes <code>Secrets</code>.</li>
+                    <li><strong>Least Privilege</strong>: Only grant the Slack app the minimum necessary OAuth scopes.</li>
+                    <li><strong>HTTPS</strong>: Ensure all communication (Request URLs, calls to Azure Function) uses HTTPS.</li>
+                    <li><strong>Input Validation</strong>: Validate any data received from Slack interactions before processing or passing it to other services.</li>
+                </ul>
+                
+                <h3>Contributing</h3>
+                <p>Contributions to enhance the Slack integration are welcome. This could include:</p>
+                <ul>
+                    <li>More sophisticated message formatting.</li>
+                    <li>Additional slash commands for cluster/order management.</li>
+                    <li>Direct integration for order status tracking from Dominos API back to Slack.</li>
+                    <li>Improved error handling and user feedback messages.</li>
+                </ul>
+            </div>
+            
+            <div class="doc-navigation">
+                <a href="index.html#docs" class="back-link">← Back to Documentation</a>
+                <div class="doc-links">
+                    <a href="controller.html" class="prev-link">← Previous: Controller Documentation</a>
+                    <a href="helm-charts.html" class="next-link">Next: Helm Charts →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">K8s 🍕</div>
+                <div class="footer-links">
+                    <a href="https://github.com/bilal/k8-pizza-observability">GitHub</a>
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#components">Components</a>
+                    <a href="index.html#docs">Docs</a>
+                </div>
+                <div class="footer-credit">
+                    <p>Built by Bilal Ashraf</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

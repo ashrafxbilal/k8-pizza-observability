@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controller Documentation - K8s Pizza Observability</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/doc-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo"><a href="index.html">K8s 🍕</a></div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#terminal">Terminal</a></li>
+                    <li><a href="index.html#components">Components</a></li>
+                    <li><a href="index.html#docs">Docs</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Documentation Content -->
+        <section class="doc-content-section">
+            <h1 class="doc-title">Pizza Order Controller <span class="emoji">🎮</span></h1>
+            
+            <div class="doc-content">
+                <h2>Pizza Order Controller: Detailed Documentation</h2>
+                
+                <h3>Overview</h3>
+                <p>The Pizza Order Controller is a custom Kubernetes controller that forms the core of the Kubernetes Pizza Observability project. It's responsible for watching <code>PizzaOrder</code> custom resources, processing these orders by interacting with the Dominos Pizza API, and updating their status within the Kubernetes cluster. This enables the automated ordering of pizza when specific cluster conditions (like high CPU usage) are met.</p>
+                
+                <h3>Architecture</h3>
+                <p>The controller is built using Go and the <code>controller-runtime</code> library, adhering to the Kubernetes operator pattern. Its main architectural components are:</p>
+                
+                <ol>
+                    <li><strong><code>PizzaOrder</code> Custom Resource Definition (CRD)</strong>: Defines the <code>PizzaOrder</code> custom resource, which represents a pizza order within the Kubernetes cluster. This CRD includes fields for customer details, delivery address, pizza specifications, and payment information.</li>
+                    <li><strong>Reconciler (<code>pizza-controller.go</code>)</strong>: Contains the primary reconciliation logic. The <code>Reconcile</code> function is triggered when <code>PizzaOrder</code> resources are created, updated, or deleted. It handles the entire lifecycle of a pizza order.</li>
+                    <li><strong>Dominos API Integration</strong>: A set of functions responsible for communicating with the Dominos Pizza API. This includes finding the nearest store, validating the order, pricing the order, and placing the order.</li>
+                    <li><strong>RBAC Configuration (<code>pizza-controller-deployment.yaml</code>)</strong>: Defines the necessary <code>ServiceAccount</code>, <code>ClusterRole</code>, and <code>ClusterRoleBinding</code> to grant the controller appropriate permissions to interact with Kubernetes API resources (e.g., <code>PizzaOrder</code> CRDs, <code>Secrets</code>).</li>
+                </ol>
+                
+                <h3>How It Works</h3>
+                <p>The controller's workflow is as follows:</p>
+                
+                <ol>
+                    <li><strong>Resource Watching</strong>: The controller continuously watches for changes to <code>PizzaOrder</code> custom resources in the cluster.</li>
+                    <li><strong>Order Processing Trigger</strong>: When a new <code>PizzaOrder</code> resource is created with the <code>spec.placeOrder</code> field set to <code>true</code>, or an existing one is updated to this state, the reconciler is invoked.</li>
+                    <li><strong>Order Validation & Preparation</strong>:
+                        <ul>
+                            <li>Retrieves customer and delivery details from the <code>PizzaOrder</code> spec.</li>
+                            <li>Fetches payment information from a Kubernetes <code>Secret</code> referenced in <code>spec.paymentSecret.name</code>.</li>
+                            <li>Validates the order details with the Dominos API (e.g., address validation, store lookup).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Order Placement</strong>:
+                        <ul>
+                            <li>Prices the order using the Dominos API.</li>
+                            <li>If validation and pricing are successful, places the order with the Dominos API.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Status Update</strong>: After attempting to place the order, the controller updates the <code>status</code> subresource of the <code>PizzaOrder</code> CRD with:
+                        <ul>
+                            <li><code>orderId</code>: The ID returned by Dominos API upon successful order placement.</li>
+                            <li><code>status</code>: The current status of the order (e.g., "Pending", "Placed", "Failed", "Delivered").</li>
+                            <li><code>price</code>: The total price of the order.</li>
+                            <li><code>lastUpdateTime</code>: Timestamp of the last status update.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Order Tracking (Future Enhancement)</strong>: While the current implementation focuses on order placement, a future enhancement could involve periodic polling of the Dominos API to track the order through its various stages (e.g., preparation, baking, out for delivery) and update the <code>PizzaOrder</code> status accordingly.</li>
+                </ol>
+                
+                <h3>Deployment</h3>
+                
+                <h4>Prerequisites</h4>
+                <ul>
+                    <li>A running Kubernetes cluster (e.g., Minikube, Kind, AKS, GKE, EKS).</li>
+                    <li><code>kubectl</code> configured to communicate with your cluster.</li>
+                    <li>The <code>PizzaOrder</code> CRD must be installed in the cluster.</li>
+                    <li>A Kubernetes <code>Secret</code> containing Dominos payment information must be created.</li>
+                    <li>Docker (if building the image locally).</li>
+                    <li>Helm 3.x (if deploying via Helm).</li>
+                </ul>
+                
+                <h4>Building the Controller (Optional)</h4>
+                <p>If you've made changes to the controller code, you'll need to rebuild the Docker image:</p>
+                
+                <div class="code-block">
+                    <pre><code># Navigate to the controller directory
+cd kubernetes/controller
+
+# Build the Docker image
+docker build -t your-registry/pizza-controller:latest .
+
+# Push to your container registry (e.g., Docker Hub, ACR, GCR)
+# docker login your-registry
+docker push your-registry/pizza-controller:latest</code></pre>
+                </div>
+                
+                <p>Make sure to update the image path in <code>kubernetes/controller/pizza-controller-deployment.yaml</code> or your Helm <code>values.yaml</code> if you use a custom registry or tag.</p>
+                
+                <h4>Deployment Methods</h4>
+                
+                <h5>1. Using Helm (Recommended)</h5>
+                <p>This is the easiest way to deploy the controller along with all its dependencies (CRD, RBAC, etc.).</p>
+                
+                <div class="code-block">
+                    <pre><code># From the project root directory
+helm install k8s-pizza helm/k8s-pizza-observability-chart --namespace k8s-pizza</code></pre>
+                </div>
+                
+                <p>Ensure your <code>values.yaml</code> for the Helm chart correctly points to the controller image and configures any necessary parameters.</p>
+                
+                <h5>2. Manual Deployment using <code>kubectl</code></h5>
+                <p>If you prefer manual deployment or are not using Helm:</p>
+                
+                <div class="code-block">
+                    <pre><code># 1. Apply the PizzaOrder CRD
+kubectl apply -f kubernetes/crds/pizzaorders.yaml
+
+# 2. Create the Dominos Payment Secret (see Configuration section below)
+kubectl apply -f kubernetes/dominos-payment-secret.example.yaml # Modify with real data first!
+
+# 3. Deploy the Controller
+kubectl apply -f kubernetes/controller/pizza-controller-deployment.yaml</code></pre>
+                </div>
+                
+                <h3>Configuration</h3>
+                
+                <h4>Payment Information (<code>dominos-payment-secret</code>)</h4>
+                <p>The controller requires payment information to place orders. This is securely stored in a Kubernetes <code>Secret</code>. Create a <code>Secret</code> named <code>dominos-payment-secret</code> in the same namespace as the controller.</p>
+                
+                <p><strong>Example <code>dominos-payment-secret.yaml</code>:</strong></p>
+                
+                <div class="code-block">
+                    <pre><code>apiVersion: v1
+kind: Secret
+metadata:
+  name: dominos-payment-secret
+  namespace: default # or your chosen namespace
+type: Opaque
+stringData:
+  cardType: "Credit" # or "Debit"
+  cardNumber: "4100123456789010" # Example card number (use a real one)
+  cardExpiration: "01/25" # MM/YY format
+  cardSecurityCode: "123" # CVV
+  cardPostalCode: "90210" # Billing ZIP/postal code</code></pre>
+                </div>
+                
+                <h4>PizzaOrder Custom Resource</h4>
+                <p>To create a pizza order, you need to create a <code>PizzaOrder</code> custom resource. Here's an example:</p>
+                
+                <div class="code-block">
+                    <pre><code>apiVersion: k8spizza.com/v1alpha1
+kind: PizzaOrder
+metadata:
+  name: pepperoni-special
+spec:
+  customer:
+    firstName: "Pizza"
+    lastName: "Lover"
+    email: "pizza@example.com"
+    phone: "1234567890"
+  delivery:
+    street: "123 Main St"
+    city: "Anytown"
+    state: "NY"
+    zipCode: "10001"
+  pizza:
+    size: "large"
+    type: "pepperoni"
+  paymentSecret:
+    name: "dominos-payment-secret"
+  placeOrder: true # Set to true to actually place the order</code></pre>
+                </div>
+                
+                <h3>Monitoring</h3>
+                
+                <h4>Controller Logs</h4>
+                <p>To view the controller logs:</p>
+                
+                <div class="code-block">
+                    <pre><code>kubectl logs deployment/pizza-controller</code></pre>
+                </div>
+                
+                <h4>PizzaOrder Status</h4>
+                <p>To check the status of pizza orders:</p>
+                
+                <div class="code-block">
+                    <pre><code># List all pizza orders
+kubectl get pizzaorder
+
+# Get detailed information about a specific order
+kubectl describe pizzaorder pepperoni-special</code></pre>
+                </div>
+                
+                <h3>Troubleshooting</h3>
+                
+                <h4>Common Issues</h4>
+                
+                <ul>
+                    <li><strong>Order Placement Fails</strong>: Check the controller logs for detailed error messages. Common issues include invalid payment information, invalid delivery address, or API connectivity problems.</li>
+                    <li><strong>CRD Not Found</strong>: Ensure the <code>PizzaOrder</code> CRD is installed in the cluster.</li>
+                    <li><strong>Permission Errors</strong>: Verify that the controller's ServiceAccount has the necessary RBAC permissions.</li>
+                    <li><strong>Secret Not Found</strong>: Ensure the payment secret exists in the same namespace as the controller and is correctly referenced in the <code>PizzaOrder</code> resource.</li>
+                </ul>
+                
+                <h4>Debugging Tips</h4>
+                
+                <ul>
+                    <li>Increase the controller's log verbosity by setting the <code>--v</code> flag in the deployment.</li>
+                    <li>Test the Dominos API integration separately using the provided test scripts.</li>
+                    <li>Verify the format of the payment information in the secret.</li>
+                </ul>
+                
+                <h3>Development</h3>
+                
+                <h4>Local Development</h4>
+                <p>To develop and test the controller locally:</p>
+                
+                <div class="code-block">
+                    <pre><code># Clone the repository
+git clone https://github.com/yourusername/k8s-pizza-observability.git
+cd k8s-pizza-observability/kubernetes/controller
+
+# Build the controller
+go build -o pizza-controller
+
+# Run the controller locally (pointing to your kubeconfig)
+./pizza-controller --kubeconfig=$HOME/.kube/config</code></pre>
+                </div>
+                
+                <h4>Adding Features</h4>
+                <p>To extend the controller with new features:</p>
+                
+                <ol>
+                    <li>Modify the <code>PizzaOrder</code> CRD to include new fields if necessary.</li>
+                    <li>Update the reconciliation logic in <code>pizza-controller.go</code>.</li>
+                    <li>Add new functions for any additional API integrations.</li>
+                    <li>Build and deploy the updated controller.</li>
+                </ol>
+                
+                <h4>Future Enhancements</h4>
+                <p>Potential improvements for the controller include:</p>
+                
+                <ul>
+                    <li>Real-time order tracking and status updates.</li>
+                    <li>Support for more pizza providers beyond Dominos.</li>
+                    <li>Integration with other notification systems (e.g., email, SMS).</li>
+                    <li>Advanced order customization options.</li>
+                </ul>
+            </div>
+            
+            <div class="doc-navigation">
+                <a href="index.html#docs" class="back-link">← Back to Documentation</a>
+                <div class="doc-links">
+                    <a href="setup-guide.html" class="prev-link">← Previous: Setup Guide</a>
+                    <a href="slack-integration.html" class="next-link">Next: Slack Integration →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">K8s 🍕</div>
+                <div class="footer-links">
+                    <a href="https://github.com/bilal/k8-pizza-observability">GitHub</a>
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#components">Components</a>
+                    <a href="index.html#docs">Docs</a>
+                </div>
+                <div class="footer-credit">
+                    <p>Built by Bilal Ashraf</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+/* Documentation Page Styles */
+
+/* Documentation Content Section */
+.doc-content-section {
+    padding: 3rem 0;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Documentation Title */
+.doc-title {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--dark);
+    text-transform: uppercase;
+    border-bottom: 4px solid var(--primary);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    transform: rotate(-1deg);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
+    background-color: var(--light);
+    padding: 0.5rem 1rem;
+    position: relative;
+}
+
+.doc-title .emoji {
+    font-size: 2.5rem;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    display: inline-block;
+    transform: rotate(10deg);
+}
+
+/* Documentation Content */
+.doc-content {
+    background-color: var(--light);
+    padding: 2rem;
+    border: 3px solid var(--dark);
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.doc-content::before {
+    content: "DOC";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    font-size: 0.8rem;
+    background-color: var(--primary);
+    color: var(--light);
+    padding: 0.2rem 0.5rem;
+    transform: rotate(3deg);
+    z-index: 1;
+}
+
+.doc-content h2 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 1.5rem 0 1rem;
+    color: var(--dark);
+    border-bottom: 3px solid var(--secondary);
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.doc-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 1.5rem 0 1rem;
+    color: var(--dark);
+    border-left: 4px solid var(--primary);
+    padding-left: 0.8rem;
+}
+
+.doc-content h4 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 1.2rem 0 0.8rem;
+    color: var(--dark);
+}
+
+.doc-content p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.doc-content ul, .doc-content ol {
+    margin: 1rem 0 1.5rem 2rem;
+}
+
+.doc-content li {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.doc-content a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.doc-content a:hover {
+    border-color: var(--primary);
+}
+
+/* Code Blocks */
+.code-block {
+    background-color: var(--terminal-bg);
+    border: 2px solid var(--dark);
+    border-radius: 4px;
+    margin: 1.5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.code-block::before {
+    content: "CODE";
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background-color: var(--dark);
+    color: var(--light);
+    padding: 0.2rem 0.5rem;
+}
+
+.code-block pre {
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 0;
+}
+
+.code-block code {
+    font-family: var(--font-mono);
+    color: var(--terminal-text);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Inline Code */
+code {
+    font-family: var(--font-mono);
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--dark);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Table of Contents */
+.toc {
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 2px solid var(--dark);
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0;
+    list-style-type: none;
+    position: relative;
+}
+
+.toc::before {
+    content: "CONTENTS";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    background-color: var(--light);
+    padding: 0 0.5rem;
+    color: var(--dark);
+    font-weight: bold;
+}
+
+.toc li {
+    margin-bottom: 0.8rem;
+}
+
+.toc a {
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+}
+
+.toc a:hover {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+/* Images */
+.image-container {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.doc-image {
+    max-width: 100%;
+    border: 3px solid var(--dark);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.image-caption {
+    font-size: 0.9rem;
+    color: var(--gray);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+/* Navigation between docs */
+.doc-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed var(--gray);
+}
+
+.back-link, .prev-link, .next-link {
+    display: inline-block;
+    padding: 0.8rem 1.2rem;
+    background-color: var(--light);
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid var(--dark);
+    font-family: var(--font-mono);
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.back-link::before, .prev-link::before, .next-link::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 107, 107, 0.2);
+    transition: all 0.3s;
+    z-index: -1;
+}
+
+.back-link:hover::before, .prev-link:hover::before, .next-link:hover::before {
+    left: 0;
+}
+
+.back-link:hover, .prev-link:hover, .next-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 3px 3px 0 var(--dark);
+}
+
+.doc-links {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .doc-title {
+        font-size: 2.2rem;
+    }
+    
+    .doc-content h2 {
+        font-size: 1.8rem;
+    }
+    
+    .doc-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .doc-content h4 {
+        font-size: 1.2rem;
+    }
+    
+    .doc-navigation {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .doc-links {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .back-link, .prev-link, .next-link {
+        width: 100%;
+        text-align: center;
+    }
+}

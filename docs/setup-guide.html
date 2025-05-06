@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide - K8s Pizza Observability</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/doc-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo"><a href="index.html">K8s 🍕</a></div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#terminal">Terminal</a></li>
+                    <li><a href="index.html#components">Components</a></li>
+                    <li><a href="index.html#docs">Docs</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Documentation Content -->
+        <section class="doc-content-section">
+            <h1 class="doc-title">Setup Guide <span class="emoji">🚀</span></h1>
+            
+            <div class="doc-content">
+                <h2>Step-by-Step Guide: Kubernetes Pizza Observability</h2>
+                <p>This guide provides detailed instructions for setting up and running the Kubernetes Pizza Observability project. Follow these steps to deploy a system that automatically orders pizza when your Kubernetes cluster's CPU usage exceeds a threshold.</p>
+                
+                <h3>Table of Contents</h3>
+                <ul class="toc">
+                    <li><a href="#infrastructure-setup">Infrastructure Setup</a></li>
+                    <li><a href="#kubernetes-deployment">Kubernetes Deployment</a></li>
+                    <li><a href="#azure-function-setup">Azure Function Setup</a></li>
+                    <li><a href="#slack-app-configuration">Slack App Configuration</a></li>
+                    <li><a href="#testing-the-system">Testing the System</a></li>
+                    <li><a href="#monitoring-and-maintenance">Monitoring and Maintenance</a></li>
+                    <li><a href="#troubleshooting">Troubleshooting</a></li>
+                </ul>
+                
+                <h3 id="infrastructure-setup">Infrastructure Setup</h3>
+                
+                <h4>1. Clone the Repository</h4>
+                <div class="code-block">
+                    <pre><code># Clone the repository
+git clone https://github.com/yourusername/k8s-pizza-observability.git
+cd k8s-pizza-observability</code></pre>
+                </div>
+                
+                <h4>2. Create Azure Service Principal</h4>
+                <div class="code-block">
+                    <pre><code># Make the script executable
+chmod +x scripts/create-sp.sh
+
+# Run the script to create a service principal
+./scripts/create-sp.sh</code></pre>
+                </div>
+                
+                <p>Note the output values for:</p>
+                <ul>
+                    <li><code>subscription_id</code></li>
+                    <li><code>tenant_id</code></li>
+                    <li><code>client_id</code></li>
+                    <li><code>client_secret</code></li>
+                </ul>
+                
+                <h4>3. Configure Terraform</h4>
+                <div class="code-block">
+                    <pre><code># Navigate to the terraform directory
+cd terraform
+
+# Create terraform.tfvars file
+cat > terraform.tfvars << EOF
+# Azure credentials
+subscription_id = "your-subscription-id"
+tenant_id       = "your-tenant-id"
+client_id       = "your-client-id"
+client_secret   = "your-client-secret"
+
+# Cluster configuration
+resource_group_name = "k8s-pizza-rg"
+location            = "eastus"
+cluster_name        = "k8s-pizza-cluster"
+node_count          = 2
+vm_size             = "Standard_D2s_v3"
+min_node_count      = 1
+max_node_count      = 5
+dns_prefix          = "k8s-pizza"
+environment         = "dev"
+EOF</code></pre>
+                </div>
+                
+                <h4>4. Deploy AKS Cluster</h4>
+                <div class="code-block">
+                    <pre><code># Initialize Terraform
+terraform init
+
+# Plan the deployment
+terraform plan
+
+# Apply the configuration
+terraform apply
+
+# Configure kubectl to use the new cluster
+az aks get-credentials --resource-group k8s-pizza-rg --name k8s-pizza-cluster
+
+# Verify the connection
+kubectl get nodes</code></pre>
+                </div>
+                
+                <h3 id="kubernetes-deployment">Kubernetes Deployment</h3>
+                
+                <div class="image-container">
+                    <img src="kubectl.jpeg" alt="kubectl command line interface" class="doc-image">
+                    <p class="image-caption">The kubectl command line tool is essential for managing your Kubernetes cluster</p>
+                </div>
+                
+                <h4>1. Deploy Prometheus and Grafana</h4>
+                <div class="code-block">
+                    <pre><code># Add Prometheus Helm repository
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+# Install Prometheus Stack with custom values
+helm install prometheus prometheus-community/kube-prometheus-stack -f kubernetes/prometheus-values.yaml
+
+# Verify the deployment
+kubectl get pods -n default</code></pre>
+                </div>
+                
+                <h4>2. Deploy Pizza Controller</h4>
+                <div class="code-block">
+                    <pre><code># Create the PizzaOrder CRD
+kubectl apply -f kubernetes/crds/pizzaorders.yaml
+
+# Create the Dominos payment secret (replace with your actual payment details)
+kubectl apply -f kubernetes/dominos-payment-secret.example.yaml
+
+# Deploy the Pizza Controller
+kubectl apply -f kubernetes/controller/pizza-controller-deployment.yaml
+
+# Verify the deployment
+kubectl get pods</code></pre>
+                </div>
+                
+                <h3 id="azure-function-setup">Azure Function Setup</h3>
+                
+                <h4>1. Deploy Azure Function</h4>
+                <div class="code-block">
+                    <pre><code># Navigate to the azure-function directory
+cd azure-function
+
+# Create local.settings.json from example
+cp local.settings.json.example local.settings.json
+
+# Edit local.settings.json with your settings
+# Update the following values:
+# - CUSTOMER_* (your contact information)
+# - DELIVERY_* (your delivery address)
+# - PIZZA_* (your pizza preferences)
+# - DOMINOS_* (API credentials)
+# - SLACK_WEBHOOK_URL (if using Slack integration)</code></pre>
+                </div>
+                
+                <h4>2. Deploy to Azure</h4>
+                <div class="code-block">
+                    <pre><code># Login to Azure
+az login
+
+# Create a resource group (if not already created by Terraform)
+az group create --name k8s-pizza-func-rg --location eastus
+
+# Create a storage account
+az storage account create --name k8spizzafuncstorage --location eastus --resource-group k8s-pizza-func-rg --sku Standard_LRS
+
+# Create a function app
+az functionapp create --resource-group k8s-pizza-func-rg --consumption-plan-location eastus --runtime node --runtime-version 14 --functions-version 4 --name k8s-pizza-func --storage-account k8spizzafuncstorage
+
+# Deploy the function
+func azure functionapp publish k8s-pizza-func</code></pre>
+                </div>
+                
+                <h4>3. Configure Function App Settings</h4>
+                <div class="code-block">
+                    <pre><code># Set application settings from local.settings.json
+az functionapp config appsettings set --name k8s-pizza-func --resource-group k8s-pizza-func-rg --settings @local.settings.json</code></pre>
+                </div>
+                
+                <h3 id="slack-app-configuration">Slack App Configuration</h3>
+                
+                <h4>1. Create a Slack App</h4>
+                <p>Visit the <a href="https://api.slack.com/apps" target="_blank">Slack API Apps page</a> and create a new app:</p>
+                <ul>
+                    <li>Click "Create New App" and select "From scratch"</li>
+                    <li>Name your app (e.g., "K8s Pizza Bot") and select your workspace</li>
+                    <li>Click "Create App"</li>
+                </ul>
+                
+                <h4>2. Configure App Features</h4>
+                <p>Set up the following features:</p>
+                <ul>
+                    <li><strong>OAuth & Permissions</strong>: Add scopes like <code>chat:write</code>, <code>commands</code>, etc.</li>
+                    <li><strong>Interactivity</strong>: Enable and set the Request URL to your Azure Function endpoint</li>
+                    <li><strong>Slash Commands</strong>: Create commands like <code>/pizza-status</code></li>
+                </ul>
+                
+                <h4>3. Install App to Workspace</h4>
+                <p>Install the app to your workspace and note the Bot User OAuth Token.</p>
+                
+                <h4>4. Update Azure Function Settings</h4>
+                <div class="code-block">
+                    <pre><code># Update the SLACK_BOT_TOKEN setting
+az functionapp config appsettings set --name k8s-pizza-func --resource-group k8s-pizza-func-rg --settings SLACK_BOT_TOKEN=xoxb-your-token</code></pre>
+                </div>
+                
+                <h3 id="testing-the-system">Testing the System</h3>
+                
+                <h4>1. Test Alert Triggering</h4>
+                <div class="code-block">
+                    <pre><code># Create a test alert
+kubectl apply -f kubernetes/http-test-alert.yaml
+
+# Check if the alert was received by the Azure Function
+# Check the Azure Function logs
+az functionapp log tail --name k8s-pizza-func --resource-group k8s-pizza-func-rg</code></pre>
+                </div>
+                
+                <h4>2. Test Pizza Ordering</h4>
+                <div class="code-block">
+                    <pre><code># Create a sample PizzaOrder resource
+kubectl apply -f kubernetes/samples/pizzaorder-sample.yaml
+
+# Check the status of the order
+kubectl get pizzaorder
+kubectl describe pizzaorder pepperoni-special</code></pre>
+                </div>
+                
+                <h3 id="monitoring-and-maintenance">Monitoring and Maintenance</h3>
+                
+                <h4>1. Access Grafana Dashboard</h4>
+                <div class="code-block">
+                    <pre><code># Get the Grafana admin password
+kubectl get secret prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+
+# Port-forward Grafana service
+kubectl port-forward svc/prometheus-grafana 3000:80
+
+# Access Grafana at http://localhost:3000 (username: admin)</code></pre>
+                </div>
+                
+                <h4>2. Monitor Pizza Orders</h4>
+                <div class="code-block">
+                    <pre><code># List all pizza orders
+kubectl get pizzaorder
+
+# Get details of a specific order
+kubectl describe pizzaorder <order-name></code></pre>
+                </div>
+                
+                <h3 id="troubleshooting">Troubleshooting</h3>
+                
+                <h4>Common Issues</h4>
+                <ul>
+                    <li><strong>Pizza Controller not working</strong>: Check logs with <code>kubectl logs deployment/pizza-controller</code></li>
+                    <li><strong>Azure Function not receiving alerts</strong>: Verify AlertManager configuration and check Function logs</li>
+                    <li><strong>Slack integration issues</strong>: Verify bot token and permissions</li>
+                </ul>
+                
+                <h4>Debugging Tips</h4>
+                <div class="code-block">
+                    <pre><code># Check AlertManager configuration
+kubectl get secret alertmanager-prometheus-kube-prometheus-alertmanager -o jsonpath='{.data.alertmanager\.yaml}' | base64 --decode
+
+# Test Azure Function locally
+cd azure-function
+func start
+
+# Send a test alert payload
+curl -X POST http://localhost:7071/api/OrderPizza -d @../kubernetes/pizza-test-alert.json --header "Content-Type: application/json"</code></pre>
+                </div>
+            </div>
+            
+            <div class="doc-navigation">
+                <a href="index.html#docs" class="back-link">← Back to Documentation</a>
+                <div class="doc-links">
+                    <a href="controller.html" class="next-link">Next: Controller Documentation →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">K8s 🍕</div>
+                <div class="footer-links">
+                    <a href="https://github.com/bilal/k8-pizza-observability">GitHub</a>
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#components">Components</a>
+                    <a href="index.html#docs">Docs</a>
+                </div>
+                <div class="footer-credit">
+                    <p>Built by Bilal Ashraf</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

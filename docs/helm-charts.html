@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helm Charts - K8s Pizza Observability</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/doc-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo"><a href="index.html">K8s 🍕</a></div>
+            <nav>
+                <ul>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#terminal">Terminal</a></li>
+                    <li><a href="index.html#components">Components</a></li>
+                    <li><a href="index.html#docs">Docs</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Documentation Content -->
+        <section class="doc-content-section">
+            <h1 class="doc-title">Helm Charts <span class="emoji">⚓</span></h1>
+            
+            <div class="doc-content">
+                <h2>Helm Charts for Kubernetes Pizza Observability: Comprehensive Guide</h2>
+                
+                <h3>Overview</h3>
+                <p>This component contains the Helm charts essential for deploying and managing the Kubernetes Pizza Observability project components within a Kubernetes cluster. Helm, as a package manager for Kubernetes, streamlines the deployment process by bundling application components into reusable and configurable packages called charts.</p>
+                
+                <p>These charts are designed to be modular, allowing for flexible deployment of individual components or the entire stack.</p>
+                
+                <h3>Available Charts</h3>
+                <p>While the current <code>helm/k8s-pizza-observability-chart/</code> directory suggests a single monolithic chart, a more modular approach often involves separate charts for distinct components. This documentation will describe the logical components that would typically be managed by Helm, whether as subcharts of a parent chart or as individual, deployable charts.</p>
+                
+                <h4>1. <code>pizza-controller</code> (Logical Component)</h4>
+                <ul>
+                    <li><strong>Purpose</strong>: Deploys the core <strong>Pizza Order Controller</strong>. This controller is responsible for watching <code>PizzaOrder</code> Custom Resources (CRs) within the cluster. When a <code>PizzaOrder</code> CR is created or updated, the controller interacts with the Dominos API (or a similar pizza delivery service API) to place an actual pizza order.</li>
+                    <li><strong>Key Kubernetes Resources Managed (within the main chart or as a subchart)</strong>:
+                        <ul>
+                            <li><code>Deployment</code>: Manages the controller's pod replicas (<code>templates/pizza-controller-deployment.yaml</code>).</li>
+                            <li><code>CustomResourceDefinition (CRD)</code>: Defines the <code>PizzaOrder</code> schema (<code>templates/pizzaorders.yaml</code>).</li>
+                            <li><code>ServiceAccount</code>: Provides a dedicated identity for the controller pod.</li>
+                            <li><code>ClusterRole</code> & <code>ClusterRoleBinding</code> (or <code>Role</code> & <code>RoleBinding</code>): Grants necessary RBAC permissions.</li>
+                            <li><code>Secret</code>: For Dominos API credentials and payment information (<code>templates/dominos-payment-secret.yaml</code>).</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4>2. <code>monitoring-stack</code> (Leveraging Community Charts as Dependencies)</h4>
+                <ul>
+                    <li><strong>Purpose</strong>: Deploys a monitoring stack (Prometheus, Grafana, Alertmanager). This is crucial for collecting metrics, visualizing dashboards, and triggering alerts that might lead to pizza orders.</li>
+                    <li><strong>Implementation</strong>: Typically achieved by adding community charts like <code>kube-prometheus-stack</code> as a dependency in the <code>Chart.yaml</code> of the main <code>k8s-pizza-observability-chart</code> or by installing it separately.</li>
+                    <li><strong>Key Components Deployed (by <code>kube-prometheus-stack</code> or similar)</strong>:
+                        <ul>
+                            <li><strong>Prometheus</strong>: Collects metrics. Configuration for Prometheus, including alert rules, can be managed via <code>templates/prometheus-values.yaml</code> or directly in the values for the dependency chart.</li>
+                            <li><strong>Grafana</strong>: For dashboards.</li>
+                            <li><strong>Alertmanager</strong>: Handles alerts and routes them.</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li><strong>Kubernetes Cluster</strong>: A running Kubernetes cluster (v1.16+ as per existing docs, v1.19+ recommended for full CRD features).</li>
+                    <li><strong>Helm</strong>: Helm v3.x installed on your local machine.</li>
+                    <li><strong><code>kubectl</code></strong>: Configured to communicate with your Kubernetes cluster.</li>
+                </ul>
+                
+                <h3>Installation Guide</h3>
+                
+                <h4>Add Required Helm Repositories (for Dependencies)</h4>
+                <p>If your main chart depends on community charts like <code>kube-prometheus-stack</code>:</p>
+                
+                <div class="code-block">
+                    <pre><code># Add Prometheus community charts (if not already added)
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update</code></pre>
+                </div>
+                
+                <h4>Installing the <code>k8s-pizza-observability-chart</code></h4>
+                
+                <ol>
+                    <li><strong>Navigate to the Helm Directory</strong>:
+                        <p>The main chart appears to be located at <code>helm/k8s-pizza-observability-chart/</code>.</p>
+                    </li>
+                    
+                    <li><strong>Customize <code>values.yaml</code></strong>: The primary configuration file is <code>helm/k8s-pizza-observability-chart/values.yaml</code>. Review and customize it. You can also create a separate override file (e.g., <code>my-custom-values.yaml</code>).
+                        
+                        <p>Key sections in <code>values.yaml</code> (based on existing <code>README.md</code> structure):</p>
+                        <ul>
+                            <li><code>global</code>: Namespace, common labels.</li>
+                            <li><code>pizzaController</code>: Image settings, resources, service account.</li>
+                            <li><code>dominosPayment</code>: Card details for the payment secret.</li>
+                            <li><code>prometheus</code>: Enablement, alert rule parameters (CPU threshold, duration).</li>
+                        </ul>
+                        
+                        <p>Example <code>my-custom-values.yaml</code>:</p>
+                        <div class="code-block">
+                            <pre><code>global:
+  namespace: k8s-pizza-prod
+
+pizzaController:
+  image:
+    repository: my-custom-repo/pizza-controller
+    tag: v1.2.3
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+
+dominosPayment:
+  cardType: "Visa"
+  cardNumber: "YOUR_VISA_CARD_NUMBER"
+  # ... other payment details ...
+
+# If kube-prometheus-stack is a subchart, configure it here:
+# kube-prometheus-stack:
+#   grafana:
+#     adminPassword: "SuperSecurePassword!"
+#   alertmanager:
+#     config:
+#       receivers:
+#       - name: 'pizza-webhook'
+#         webhook_configs:
+#         - url: 'http://YOUR_AZURE_FUNCTION_OR_HANDLER/api/alert'</code></pre>
+                        </div>
+                    </li>
+                    
+                    <li><strong>Install the Chart</strong>:
+                        <p>From the directory containing the <code>helm</code> folder (e.g., project root):</p>
+                        <div class="code-block">
+                            <pre><code>helm install k8s-pizza-release ./helm/k8s-pizza-observability-chart/ -n k8s-pizza-prod --create-namespace -f my-custom-values.yaml</code></pre>
+                        </div>
+                        <ul>
+                            <li><code>k8s-pizza-release</code>: Your chosen release name.</li>
+                            <li><code>./helm/k8s-pizza-observability-chart/</code>: Path to the chart.</li>
+                            <li><code>-n k8s-pizza-prod</code>: Target namespace.</li>
+                            <li><code>--create-namespace</code>: If the namespace doesn't exist.</li>
+                            <li><code>-f my-custom-values.yaml</code>: Your custom values file.</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>Configuration Parameters</h3>
+                <p>Refer to the <code>helm/k8s-pizza-observability-chart/values.yaml</code> file for a comprehensive list of configurable parameters and their default values. The existing <code>README.md</code> provides a good summary table structure for these values, which should be maintained and expanded in the chart's own <code>README.md</code>.</p>
+                
+                <p><strong>Key Configuration Areas</strong>:</p>
+                <ul>
+                    <li><strong>Global Settings</strong>: Namespace, labels.</li>
+                    <li><strong>Pizza Controller</strong>: Image details, resource allocation, service account information.</li>
+                    <li><strong>Dominos Payment Secret</strong>: Parameters to populate the payment details secret. <strong>Ensure these are handled securely, ideally by referencing pre-existing secrets or using a secrets management tool like HashiCorp Vault or Sealed Secrets, rather than plain text in values files for production.</strong></li>
+                    <li><strong>Prometheus/Monitoring Stack</strong>: Configuration for Prometheus alert rules, and if <code>kube-prometheus-stack</code> is a subchart, all its extensive configuration options (persistence, Grafana settings, Alertmanager receivers, etc.).</li>
+                </ul>
+                
+                <h3>Upgrading Releases</h3>
+                <p>To upgrade an existing Helm release to a new chart version or with modified configuration:</p>
+                
+                <ol>
+                    <li>Ensure your chart directory (<code>helm/k8s-pizza-observability-chart/</code>) has the updated chart version in <code>Chart.yaml</code> and any template changes.</li>
+                    <li>Modify your values file (<code>my-custom-values.yaml</code>) if needed.</li>
+                    <li>Run <code>helm upgrade</code>:
+                        <div class="code-block">
+                            <pre><code>helm upgrade k8s-pizza-release ./helm/k8s-pizza-observability-chart/ -n k8s-pizza-prod -f my-custom-values.yaml</code></pre>
+                        </div>
+                    </li>
+                </ol>
+                
+                <h3>Uninstalling Releases</h3>
+                <p>To remove a deployed Helm release and its associated Kubernetes resources:</p>
+                
+                <div class="code-block">
+                    <pre><code>helm uninstall k8s-pizza-release -n k8s-pizza-prod</code></pre>
+                </div>
+                
+                <p><strong>Important Notes on Uninstallation</strong>:</p>
+                <ul>
+                    <li><strong>PersistentVolumeClaims (PVCs)</strong>: Helm does not automatically delete PVCs to prevent accidental data loss. If Prometheus or Grafana were configured with persistence, you might need to delete their PVCs manually.</li>
+                    <li><strong>CustomResourceDefinitions (CRDs)</strong>: CRDs installed by Helm (like <code>pizzaorders.k8spizza.com</code>) are also not removed by default on <code>helm uninstall</code>. If you need to remove the CRD, do so manually:
+                        <div class="code-block">
+                            <pre><code>kubectl delete crd pizzaorders.k8spizza.com</code></pre>
+                        </div>
+                    </li>
+                </ul>
+                
+                <h3>Chart Structure (<code>k8s-pizza-observability-chart</code>)</h3>
+                <p>The existing <code>README.md</code> outlines this structure:</p>
+                
+                <div class="code-block">
+                    <pre><code>k8s-pizza-observability-chart/
+├── Chart.yaml             # Chart metadata (name, version, appVersion, dependencies)
+├── values.yaml            # Default configuration values for this chart and subcharts.
+├── templates/             # Directory of Kubernetes manifest templates.
+│   ├── _helpers.tpl       # Go template helper functions.
+│   ├── dominos-payment-secret.yaml  # Template for the payment Secret.
+│   ├── pizza-controller-deployment.yaml  # Template for the controller Deployment.
+│   ├── pizzaorders.yaml   # Template for the PizzaOrder CRD.
+│   └── prometheus-values.yaml  # Potentially a values snippet or ConfigMap for Prometheus rules.
+├── .helmignore           # Files to ignore when packaging the chart.
+└── charts/                # Optional: Directory for subcharts (e.g., if kube-prometheus-stack was vendored).</code></pre>
+                </div>
+                
+                <h3>Best Practices for Helm Chart Development & Usage</h3>
+                <ul>
+                    <li><strong>Parameterize</strong>: Make your chart highly configurable via <code>values.yaml</code>.</li>
+                    <li><strong>Secure Secrets</strong>: For production, avoid plain text secrets in <code>values.yaml</code>. Use external secrets management (e.g., Vault, Sealed Secrets, SOPS) or rely on pre-created secrets.</li>
+                    <li><strong>Idempotency</strong>: Ensure charts can be applied multiple times without errors.</li>
+                    <li><strong>Resource Management</strong>: Define sensible default CPU/memory <code>requests</code> and <code>limits</code>.</li>
+                    <li><strong>Health Probes</strong>: Implement <code>livenessProbe</code> and <code>readinessProbe</code> for deployments.</li>
+                    <li><strong>Documentation</strong>: Maintain a clear <code>README.md</code> within the chart directory (<code>helm/k8s-pizza-observability-chart/README.md</code>) detailing all parameters, prerequisites, and usage.</li>
+                    <li><strong>Lint and Test</strong>: Use <code>helm lint</code> and <code>helm template</code> extensively during development.</li>
+                    <li><strong>Versioning</strong>: Follow SemVer for chart versions in <code>Chart.yaml</code>.</li>
+                </ul>
+                
+                <h3>Chart Development & Testing (within <code>helm/k8s-pizza-observability-chart/</code>)</h3>
+                <ul>
+                    <li><strong>Lint Chart</strong>:
+                        <div class="code-block">
+                            <pre><code>helm lint .</code></pre>
+                        </div>
+                    </li>
+                    <li><strong>Template Chart (Dry Run)</strong>:
+                        <div class="code-block">
+                            <pre><code>helm template my-release . -f values.yaml -n test-namespace > rendered-manifests.yaml
+# or with debug output
+helm install my-release . --dry-run --debug -n test-namespace -f values.yaml</code></pre>
+                        </div>
+                    </li>
+                    <li><strong>Package Chart</strong>:
+                        <div class="code-block">
+                            <pre><code>helm package .</code></pre>
+                        </div>
+                        <p>This creates a <code>.tgz</code> archive of your chart that can be distributed or uploaded to a Helm repository.</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="doc-navigation">
+                <a href="index.html#docs" class="back-link">← Back to Documentation</a>
+                <div class="doc-links">
+                    <a href="slack-integration.html" class="prev-link">← Previous: Slack Integration</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">K8s 🍕</div>
+                <div class="footer-links">
+                    <a href="https://github.com/bilal/k8-pizza-observability">GitHub</a>
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#components">Components</a>
+                    <a href="index.html#docs">Docs</a>
+                </div>
+                <div class="footer-credit">
+                    <p>Built by Bilal Ashraf</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
