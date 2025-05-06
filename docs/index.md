@@ -1,3 +1,5 @@
+<div class="creator-badge">Created by Bilal</div>
+
 # Kubernetes Pizza Observability
 
 > Order pizza automatically when your Kubernetes cluster is under high load!
@@ -87,23 +89,60 @@ We've taken this concept and integrated it with Kubernetes monitoring to create 
 
 ## Components
 
-### Core Components
-
-- **Prometheus & Grafana**: Monitors cluster metrics and visualizes CPU usage
-- **AlertManager**: Routes alerts to the Azure Function
-- **Azure Function**: Processes alerts and creates pizza orders
-- **Pizza Controller**: Kubernetes controller that manages PizzaOrder custom resources
-- **Slack App**: Provides a user interface for confirming pizza orders
+<div class="bento-grid">
+  <div class="card card-emoji" data-emoji="📊">
+    <h3 class="card-title">Prometheus & Grafana</h3>
+    <p>Monitors cluster metrics and visualizes CPU usage in real-time dashboards</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="🚨">
+    <h3 class="card-title">AlertManager</h3>
+    <p>Routes alerts to the Azure Function when CPU thresholds are exceeded</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="⚡">
+    <h3 class="card-title">Azure Function</h3>
+    <p>Processes alerts and creates PizzaOrder custom resources</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="🍕">
+    <h3 class="card-title">Pizza Controller</h3>
+    <p>Kubernetes controller that manages PizzaOrder custom resources</p>
+  </div>
+  
+  <div class="card card-emoji" data-emoji="💬">
+    <h3 class="card-title">Slack App</h3>
+    <p>Provides a user interface for confirming pizza orders</p>
+  </div>
+</div>
 
 ## Getting Started
 
-### Prerequisites
-
-- Kubernetes cluster (AKS, GKE, EKS, or local like Minikube/Kind)
-- Helm 3.x
-- kubectl configured to access your cluster
-- Docker and Docker Compose (for local development)
-- Dominos account (for actual pizza ordering)
+<div class="card card-feature card-large">
+  <h3 class="card-title">Prerequisites</h3>
+  <div class="bento-grid">
+    <div class="card">
+      <h4>Kubernetes</h4>
+      <p>AKS, GKE, EKS, or local like Minikube/Kind</p>
+    </div>
+    <div class="card">
+      <h4>Helm 3.x</h4>
+      <p>For deploying the application stack</p>
+    </div>
+    <div class="card">
+      <h4>kubectl</h4>
+      <p>Configured to access your cluster</p>
+    </div>
+    <div class="card">
+      <h4>Docker</h4>
+      <p>And Docker Compose for local development</p>
+    </div>
+    <div class="card">
+      <h4>Dominos Account</h4>
+      <p>For actual pizza ordering functionality</p>
+    </div>
+  </div>
+</div>
 
 ### Quick Installation
 

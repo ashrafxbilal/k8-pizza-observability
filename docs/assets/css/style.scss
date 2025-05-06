@@ -405,19 +405,31 @@ tr:hover {
   color: var(--pizza-green);
 }
 
-/* Card components */
+/* Bento UI Grid Layout */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+/* Card components with Bento UI style */
 .card {
   background: white;
-  border-radius: 15px;
-  padding: 2rem;
-  margin: 1.5rem 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  position: relative;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  border-color: rgba(108, 92, 231, 0.2);
 }
 
 .card-title {
@@ -425,6 +437,85 @@ tr:hover {
   margin-top: 0;
   margin-bottom: 1rem;
   color: var(--neon-purple);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-title::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: var(--neon-purple);
+  border-radius: 50%;
+}
+
+/* Bento card variations */
+.card-large {
+  grid-column: span 2;
+}
+
+.card-tall {
+  grid-row: span 2;
+}
+
+.card-feature {
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+  color: white;
+}
+
+.card-feature .card-title {
+  color: white;
+}
+
+.card-feature .card-title::before {
+  background: white;
+}
+
+/* Card with emoji icon */
+.card-emoji {
+  position: relative;
+  padding-top: 3rem;
+}
+
+.card-emoji::before {
+  content: attr(data-emoji);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+/* Creator badge */
+.creator-badge {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--neon-purple);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.creator-badge::before {
+  content: '👨‍💻';
+  font-size: 1.2rem;
+}
+
+body.dark-theme .creator-badge {
+  background: rgba(26, 26, 46, 0.8);
+  color: var(--neon-teal);
 }
 
 /* Feature grid */
